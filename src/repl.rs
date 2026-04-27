@@ -18,13 +18,14 @@ impl IdontCompleter {
         Self {
             commands: vec![
                 "mknote ",
-                "initnote path ",
+                "initnote ",
                 "listnote",
                 "rmnote ",
                 "catnote ",
                 "editnote ",
                 "renote ",
                 "searchnote ",
+                "listlog",
                 "help",
                 "exit",
                 "quit",
@@ -69,6 +70,8 @@ pub fn run(storage: &mut Storage) -> Result<(), Box<dyn std::error::Error>> {
 
     println!("idontnote v0.1.0 — 输入 help 查看帮助，exit 退出");
 
+    let mut log: Vec<String> = Vec::new();
+
     loop {
         let line = rl.readline("idontnote> ");
         match line {
@@ -78,9 +81,10 @@ pub fn run(storage: &mut Storage) -> Result<(), Box<dyn std::error::Error>> {
                     continue;
                 }
                 rl.add_history_entry(trimmed)?;
+                log.push(trimmed.to_string());
 
                 match command::parse(trimmed) {
-                    Ok(cmd) => match handler::dispatch(storage, cmd) {
+                    Ok(cmd) => match handler::dispatch(storage, &log, cmd) {
                         Ok(should_exit) => {
                             if should_exit {
                                 println!("再见！");

@@ -2,7 +2,7 @@
 pub enum Command {
     /// mknote <filename> — 创建笔记（支持 .md / .txt）
     Mknote(String),
-    /// initnote path <path> — 初始化笔记本目录
+    /// initnote <path> — 初始化笔记本目录
     Initnote(String),
     /// listnote — 列出所有笔记
     Listnote,
@@ -16,6 +16,8 @@ pub enum Command {
     Renote(String, String),
     /// searchnote <keyword> — 搜索笔记内容
     Searchnote(String),
+    /// listlog — 显示本次会话的命令历史
+    Listlog,
     /// help — 显示帮助
     Help,
     /// exit / quit — 退出 REPL
@@ -40,11 +42,7 @@ pub fn parse(input: &str) -> Result<Command, String> {
             Ok(Command::Mknote(name.to_string()))
         }
         "initnote" => {
-            // initnote path <path>
-            if parts.get(1).map(|s| s.trim()) != Some("path") {
-                return Err("用法: initnote path <path>".into());
-            }
-            let path = parts.get(2).ok_or("用法: initnote path <path>")?;
+            let path = parts.get(1).ok_or("用法: initnote <path>")?;
             let path = path.trim();
             if path.is_empty() {
                 return Err("路径不能为空".into());
@@ -73,6 +71,7 @@ pub fn parse(input: &str) -> Result<Command, String> {
             let keyword = parts.get(1).ok_or("用法: searchnote <keyword>")?;
             Ok(Command::Searchnote(keyword.trim().to_string()))
         }
+        "listlog" => Ok(Command::Listlog),
         "help" => Ok(Command::Help),
         "exit" | "quit" => Ok(Command::Exit),
         _ => Err(format!("未知命令: {}，输入 help 查看帮助", cmd)),
