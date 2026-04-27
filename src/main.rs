@@ -1,3 +1,12 @@
+mod command;
+mod handler;
+mod repl;
+mod storage;
+
 fn main() {
-    println!("Hello, world!");
+    let mut storage = storage::Storage::new();
+    if let Err(e) = repl::run(&mut storage) {
+        eprintln!("致命错误: {}", e);
+        std::process::exit(1);
+    }
 }

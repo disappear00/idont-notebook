@@ -3,4 +3,12 @@ name = "idont-notebook"
 version = "0.1.0"
 edition = "2024"
 
+[[bin]]
+name = "idontnote"
+path = "src/main.rs"
+
 [dependencies]
+rustyline = "15"
+serde = { version = "1", features = ["derive"] }
+toml = "0.8"
+thiserror = "2"
