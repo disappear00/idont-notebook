@@ -1,9 +1,9 @@
 
-use crate::storage::{NotebookError, Storage};
+use crate::storage::{StorageError, Storage};
 
-pub fn listnote(storage: &mut Storage) -> Result<(), NotebookError> {
+pub fn listnote(storage: &mut Storage) -> Result<(), StorageError> {
     if !storage.is_initialized() {
-        return Err(NotebookError::NotInitialized);
+        return Err(StorageError::NotInitialized);
     }
     let notes = storage.list_notes()?;
     if notes.is_empty() {

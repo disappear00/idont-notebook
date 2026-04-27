@@ -1,9 +1,9 @@
 
-use crate::storage::{NotebookError, Storage};
+use crate::storage::{StorageError, Storage};
 
-pub fn catnote(storage: &mut Storage, filename: &str) -> Result<(), NotebookError> {
+pub fn catnote(storage: &mut Storage, filename: &str) -> Result<(), StorageError> {
     if !storage.is_initialized() {
-        return Err(NotebookError::NotInitialized);
+        return Err(StorageError::NotInitialized);
     }
     // TODO: 读取并输出笔记内容
     println!("catnote: 查看笔记 {}", filename);

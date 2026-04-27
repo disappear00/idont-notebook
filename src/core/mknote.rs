@@ -1,9 +1,9 @@
 
-use crate::storage::{NotebookError, Storage};
+use crate::storage::{StorageError, Storage};
 
-pub fn mknote(storage: &mut Storage, filename: &str) -> Result<(), NotebookError> {
+pub fn mknote(storage: &mut Storage, filename: &str) -> Result<(), StorageError> {
     if !storage.is_initialized() {
-        return Err(NotebookError::NotInitialized);
+        return Err(StorageError::NotInitialized);
     }
     // TODO: 创建笔记文件、更新 notes.toml
     println!("mknote: 创建笔记 {}", filename);

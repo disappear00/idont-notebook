@@ -1,5 +1,5 @@
-use crate::storage::{NotebookError};
-pub fn help()-> Result<(), NotebookError> {
+use crate::storage::{StorageError};
+pub fn help()-> Result<(), StorageError> {
     println!("idontnote — 可用命令:");
     println!();
     println!("  mknote <filename>            创建笔记（支持 .md / .txt）");

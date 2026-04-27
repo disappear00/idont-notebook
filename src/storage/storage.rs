@@ -1,24 +1,5 @@
 use std::path::PathBuf;
-use thiserror::Error;
-
-/// 笔记本错误类型
-#[derive(Error, Debug)]
-pub enum NotebookError {
-    #[error("笔记本未初始化，请先运行 initnote path <path>")]
-    NotInitialized,
-
-    #[error("笔记不存在: {0}")]
-    NoteNotFound(String),
-
-    #[error("笔记已存在: {0}")]
-    NoteAlreadyExists(String),
-
-    #[error("IO 错误: {0}")]
-    Io(#[from] std::io::Error),
-
-    #[error("{0}")]
-    Other(String),
-}
+use super::error::StorageError;
 
 /// 笔记本存储管理
 pub struct Storage {
@@ -35,7 +16,7 @@ impl Storage {
     }
 
     /// 初始化笔记本目录
-    pub fn init(&mut self, path: &str) -> Result<(), NotebookError> {
+    pub fn init(&mut self, path: &str) -> Result<(), StorageError> {
         let p = PathBuf::from(path);
         // TODO: 创建目录、写入 notes.toml 元数据文件
         self.notebook_path = Some(p);
@@ -53,18 +34,18 @@ impl Storage {
     }
 
     /// 获取笔记的完整路径（TODO: 实现）
-    pub fn get_note_path(&self, filename: &str) -> Result<PathBuf, NotebookError> {
+    pub fn get_note_path(&self, filename: &str) -> Result<PathBuf, StorageError> {
         let base = self
             .notebook_path
             .as_ref()
-            .ok_or(NotebookError::NotInitialized)?;
+            .ok_or(StorageError::NotInitialized)?;
         Ok(base.join(filename))
     }
 
     /// 列出所有笔记（TODO: 实现）
-    pub fn list_notes(&self) -> Result<Vec<String>, NotebookError> {
+    pub fn list_notes(&self) -> Result<Vec<String>, StorageError> {
         if !self.is_initialized() {
-            return Err(NotebookError::NotInitialized);
+            return Err(StorageError::NotInitialized);
         }
         // TODO: 扫描目录或读取 notes.toml
         Ok(vec![])

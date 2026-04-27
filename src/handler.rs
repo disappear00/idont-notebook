@@ -1,34 +1,34 @@
 use crate::command::Command;
 use crate::core::*;
-use crate::storage::{NotebookError, Storage};
+use crate::storage::{StorageError, Storage};
 
 /// 处理 mknote 命令
-pub fn handle_mknote(storage: &mut Storage, filename: &str) -> Result<(), NotebookError> {
+pub fn handle_mknote(storage: &mut Storage, filename: &str) -> Result<(), StorageError> {
     mknote::mknote(storage, filename)
 }
 
 /// 处理 initnote 命令
-pub fn handle_initnote(storage: &mut Storage, path: &str) -> Result<(), NotebookError> {
+pub fn handle_initnote(storage: &mut Storage, path: &str) -> Result<(), StorageError> {
     initnote::initnote(storage, path)
 }
 
 /// 处理 listnote 命令
-pub fn handle_listnote(storage: &mut Storage) -> Result<(), NotebookError> {
+pub fn handle_listnote(storage: &mut Storage) -> Result<(), StorageError> {
     listnote::listnote(storage)
 }
 
 /// 处理 rmnote 命令
-pub fn handle_rmnote(storage: &mut Storage, filename: &str) -> Result<(), NotebookError> {
+pub fn handle_rmnote(storage: &mut Storage, filename: &str) -> Result<(), StorageError> {
     rmnote::rmnote(storage, filename)
 }
 
 /// 处理 catnote 命令
-pub fn handle_catnote(storage: &mut Storage, filename: &str) -> Result<(), NotebookError> {
+pub fn handle_catnote(storage: &mut Storage, filename: &str) -> Result<(), StorageError> {
     catnote::catnote(storage, filename)
 }
 
 /// 处理 editnote 命令
-pub fn handle_editnote(storage: &mut Storage, filename: &str) -> Result<(), NotebookError> {
+pub fn handle_editnote(storage: &mut Storage, filename: &str) -> Result<(), StorageError> {
     editnote::editnote(storage, filename)
 }
 
@@ -37,27 +37,27 @@ pub fn handle_renote(
     storage: &mut Storage,
     old: &str,
     new: &str,
-) -> Result<(), NotebookError> {
+) -> Result<(), StorageError> {
     renote::renote(storage, old, new)
 }
 
 /// 处理 searchnote 命令
-pub fn handle_searchnote(storage: &mut Storage, keyword: &str) -> Result<(), NotebookError> {
+pub fn handle_searchnote(storage: &mut Storage, keyword: &str) -> Result<(), StorageError> {
     searchnote::searchnote(storage, keyword)
 }
 
 /// 处理 listlog 命令
-pub fn handle_listlog(log: &[String]) -> Result<(),NotebookError>  {
+pub fn handle_listlog(log: &[String]) -> Result<(),StorageError>  {
     listlog::listlog(log)
 }
 
 /// 处理 help 命令
-pub fn handle_help() -> Result<(), NotebookError> {
+pub fn handle_help() -> Result<(), StorageError> {
     help::help()
 }
 
 /// 分发命令到对应处理函数
-pub fn dispatch(storage: &mut Storage, log: &[String], cmd: Command) -> Result<bool, NotebookError> {
+pub fn dispatch(storage: &mut Storage, log: &[String], cmd: Command) -> Result<bool, StorageError> {
     match cmd {
         Command::Mknote(filename) => handle_mknote(storage, &filename)?,
         Command::Initnote(path) => handle_initnote(storage, &path)?,

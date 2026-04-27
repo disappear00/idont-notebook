@@ -1,7 +1,7 @@
 
-use crate::storage::{NotebookError, Storage};
+use crate::storage::{StorageError, Storage};
 
-pub fn initnote(storage: &mut Storage, path: &str) -> Result<(), NotebookError> {
+pub fn initnote(storage: &mut Storage, path: &str) -> Result<(), StorageError> {
 
     storage.init(path)?;
 

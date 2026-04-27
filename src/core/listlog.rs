@@ -1,6 +1,6 @@
 
-use crate::storage::{NotebookError};
-pub fn listlog(log: &[String]) -> Result<(), NotebookError> {
+use crate::storage::{StorageError};
+pub fn listlog(log: &[String]) -> Result<(), StorageError> {
     if log.is_empty() {
         println!("listlog: 当前会话暂无命令记录");
     } else {
