@@ -1,68 +1,35 @@
 use crate::command::Command;
+use crate::core::*;
 use crate::storage::{NotebookError, Storage};
 
 /// 处理 mknote 命令
 pub fn handle_mknote(storage: &mut Storage, filename: &str) -> Result<(), NotebookError> {
-    if !storage.is_initialized() {
-        return Err(NotebookError::NotInitialized);
-    }
-    // TODO: 创建笔记文件、更新 notes.toml
-    println!("mknote: 创建笔记 {}", filename);
-    Ok(())
+    mknote::mknote(storage, filename)
 }
 
 /// 处理 initnote 命令
 pub fn handle_initnote(storage: &mut Storage, path: &str) -> Result<(), NotebookError> {
-    storage.init(path)?;
-    println!("initnote: 笔记本已初始化于 {}", path);
-    Ok(())
+    initnote::initnote(storage, path)
 }
 
 /// 处理 listnote 命令
 pub fn handle_listnote(storage: &mut Storage) -> Result<(), NotebookError> {
-    if !storage.is_initialized() {
-        return Err(NotebookError::NotInitialized);
-    }
-    let notes = storage.list_notes()?;
-    if notes.is_empty() {
-        println!("listnote: 暂无笔记");
-    } else {
-        println!("listnote: 共 {} 篇笔记", notes.len());
-        for note in &notes {
-            println!("  - {}", note);
-        }
-    }
-    Ok(())
+    listnote::listnote(storage)
 }
 
 /// 处理 rmnote 命令
 pub fn handle_rmnote(storage: &mut Storage, filename: &str) -> Result<(), NotebookError> {
-    if !storage.is_initialized() {
-        return Err(NotebookError::NotInitialized);
-    }
-    // TODO: 删除笔记文件、更新 notes.toml
-    println!("rmnote: 删除笔记 {}", filename);
-    Ok(())
+    rmnote::rmnote(storage, filename)
 }
 
 /// 处理 catnote 命令
 pub fn handle_catnote(storage: &mut Storage, filename: &str) -> Result<(), NotebookError> {
-    if !storage.is_initialized() {
-        return Err(NotebookError::NotInitialized);
-    }
-    // TODO: 读取并输出笔记内容
-    println!("catnote: 查看笔记 {}", filename);
-    Ok(())
+    catnote::catnote(storage, filename)
 }
 
 /// 处理 editnote 命令
 pub fn handle_editnote(storage: &mut Storage, filename: &str) -> Result<(), NotebookError> {
-    if !storage.is_initialized() {
-        return Err(NotebookError::NotInitialized);
-    }
-    // TODO: 用系统编辑器打开笔记
-    println!("editnote: 编辑笔记 {}", filename);
-    Ok(())
+    editnote::editnote(storage, filename)
 }
 
 /// 处理 renote 命令
@@ -71,22 +38,12 @@ pub fn handle_renote(
     old: &str,
     new: &str,
 ) -> Result<(), NotebookError> {
-    if !storage.is_initialized() {
-        return Err(NotebookError::NotInitialized);
-    }
-    // TODO: 重命名笔记文件、更新 notes.toml
-    println!("renote: 重命名 {} -> {}", old, new);
-    Ok(())
+    renote::renote(storage, old, new)
 }
 
 /// 处理 searchnote 命令
 pub fn handle_searchnote(storage: &mut Storage, keyword: &str) -> Result<(), NotebookError> {
-    if !storage.is_initialized() {
-        return Err(NotebookError::NotInitialized);
-    }
-    // TODO: 搜索笔记内容
-    println!("searchnote: 搜索关键词 \"{}\"", keyword);
-    Ok(())
+    searchnote::searchnote(storage, keyword)
 }
 
 /// 处理 help 命令

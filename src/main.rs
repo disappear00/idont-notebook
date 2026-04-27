@@ -1,4 +1,5 @@
 mod command;
+mod core;
 mod handler;
 mod repl;
 mod storage;
