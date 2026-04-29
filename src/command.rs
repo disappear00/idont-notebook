@@ -2,8 +2,8 @@
 pub enum Command {
     /// mknote <filename> — 创建笔记（支持 .md / .txt）
     Mknote(String),
-    /// initnote <path> — 初始化笔记本目录
-    Initnote(String),
+    /// initlib <path> — 初始化笔记本目录
+    Initlib(String),
     /// listnote — 列出所有笔记
     Listnote,
     /// rmnote <filename> — 删除笔记
@@ -41,13 +41,13 @@ pub fn parse(input: &str) -> Result<Command, String> {
             validate_note_filename(name)?;
             Ok(Command::Mknote(name.to_string()))
         }
-        "initnote" => {
-            let path = parts.get(1).ok_or("用法: initnote <path>")?;
+        "initlib" => {
+            let path = parts.get(1).ok_or("用法: initlib <path>")?;
             let path = path.trim();
             if path.is_empty() {
                 return Err("路径不能为空".into());
             }
-            Ok(Command::Initnote(path.to_string()))
+            Ok(Command::Initlib(path.to_string()))
         }
         "listnote" => Ok(Command::Listnote),
         "rmnote" => {

@@ -18,7 +18,7 @@ impl IdontCompleter {
         Self {
             commands: vec![
                 "mknote ",
-                "initnote ",
+                "initlib ",
                 "listnote",
                 "rmnote ",
                 "catnote ",

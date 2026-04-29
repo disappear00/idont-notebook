@@ -7,9 +7,9 @@ pub fn handle_mknote(storage: &mut Storage, filename: &str) -> Result<(), Storag
     mknote::mknote(storage, filename)
 }
 
-/// 处理 initnote 命令
-pub fn handle_initnote(storage: &mut Storage, path: &str) -> Result<(), StorageError> {
-    initnote::initnote(storage, path)
+/// 处理 initlib 命令
+pub fn handle_initlib(storage: &mut Storage, path: &str) -> Result<(), StorageError> {
+    initlib::initlib(storage, path)
 }
 
 /// 处理 listnote 命令
@@ -60,7 +60,7 @@ pub fn handle_help() -> Result<(), StorageError> {
 pub fn dispatch(storage: &mut Storage, log: &[String], cmd: Command) -> Result<bool, StorageError> {
     match cmd {
         Command::Mknote(filename) => handle_mknote(storage, &filename)?,
-        Command::Initnote(path) => handle_initnote(storage, &path)?,
+        Command::Initlib(path) => handle_initlib(storage, &path)?,
         Command::Listnote => handle_listnote(storage)?,
         Command::Rmnote(filename) => handle_rmnote(storage, &filename)?,
         Command::Catnote(filename) => handle_catnote(storage, &filename)?,

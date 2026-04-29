@@ -3,7 +3,7 @@ pub fn help()-> Result<(), StorageError> {
     println!("idontnote — 可用命令:");
     println!();
     println!("  mknote <filename>            创建笔记（支持 .md / .txt）");
-    println!("  initnote <path>               初始化笔记本目录");
+    println!("  initlib <path>               初始化笔记本目录");
     println!("  listnote                     列出所有笔记");
     println!("  rmnote <filename>            删除笔记");
     println!("  catnote <filename>           查看笔记内容");

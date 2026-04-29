@@ -1,7 +1,7 @@
 pub mod catnote;
 pub mod editnote;
 pub mod help;
-pub mod initnote;
+pub mod initlib;
 pub mod listlog;
 pub mod listnote;
 pub mod mknote;

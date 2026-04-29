@@ -4,7 +4,7 @@ use thiserror::Error;
 /// 笔记本错误类型
 #[derive(Error, Debug)]
 pub enum StorageError {
-    #[error("笔记本未初始化，请先运行 initnote path <path>")]
+    #[error("笔记本未初始化，请先运行 initlib <path>")]
     NotInitialized,
 
     #[error("笔记不存在: {0}")]
