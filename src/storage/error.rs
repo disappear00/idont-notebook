@@ -7,6 +7,12 @@ pub enum StorageError {
     #[error("笔记本未初始化，请先运行 initlib <path>")]
     NotInitialized,
 
+    #[error("没有已注册的仓库，请先运行 initlib <path>")]
+    NoNotebooksRegistered,
+
+    #[error("无效的选择索引: {0}")]
+    InvalidSelection(String),
+
     #[error("笔记不存在: {0}")]
     NoteNotFound(String),
 

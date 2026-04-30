@@ -9,7 +9,7 @@ pub fn handle_mknote(storage: &mut Storage, filename: &str) -> Result<(), Storag
 
 /// 处理 initlib 命令
 pub fn handle_initlib(storage: &mut Storage, path: &str) -> Result<(), StorageError> {
-    initlib::initlib(storage, path)
+    initlib::initlib(storage, path, None)
 }
 
 /// 处理 listnote 命令
