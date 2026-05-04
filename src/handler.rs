@@ -12,6 +12,21 @@ pub fn handle_initlib(storage: &mut Storage, path: &str) -> Result<(), StorageEr
     initlib::initlib(storage, path, None)
 }
 
+/// 处理 listlib 命令
+pub fn handle_listlib(storage: &Storage) -> Result<(), StorageError> {
+    listlib::listlib(storage)
+}
+
+/// 处理 selectlib 命令
+pub fn handle_selectlib(storage: &mut Storage, selector: &str) -> Result<(), StorageError> {
+    selectlib::selectlib(storage, selector)
+}
+
+/// 处理 currentlib 命令
+pub fn handle_currentlib(storage: &Storage) -> Result<(), StorageError> {
+    currentlib::currentlib(storage)
+}
+
 /// 处理 listnote 命令
 pub fn handle_listnote(storage: &mut Storage) -> Result<(), StorageError> {
     listnote::listnote(storage)
@@ -61,6 +76,9 @@ pub fn dispatch(storage: &mut Storage, log: &[String], cmd: Command) -> Result<b
     match cmd {
         Command::Mknote(filename) => handle_mknote(storage, &filename)?,
         Command::Initlib(path) => handle_initlib(storage, &path)?,
+        Command::Listlib => handle_listlib(storage)?,
+        Command::Selectlib(selector) => handle_selectlib(storage, &selector)?,
+        Command::Currentlib => handle_currentlib(storage)?,
         Command::Listnote => handle_listnote(storage)?,
         Command::Rmnote(filename) => handle_rmnote(storage, &filename)?,
         Command::Catnote(filename) => handle_catnote(storage, &filename)?,

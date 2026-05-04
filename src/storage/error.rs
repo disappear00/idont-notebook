@@ -10,6 +10,9 @@ pub enum StorageError {
     #[error("没有已注册的仓库，请先运行 initlib <path>")]
     NoNotebooksRegistered,
 
+    #[error("未选中任何仓库，请先运行 selectlib <编号或名称>")]
+    NoNotebookSelected,
+
     #[error("无效的选择索引: {0}")]
     InvalidSelection(String),
 

@@ -1,97 +1,20 @@
 use std::fs;
 use std::path::PathBuf;
 use chrono::Local;
-use serde::{Serialize, Deserialize};
+
 use super::error::StorageError;
-
-/// 全局配置文件名（存储在用户目录下）
-const GLOBAL_CONFIG_FILENAME: &str = "idont-notebook-config.toml";
-const META_FILENAME: &str = "notes.toml";
-const NOTEBOOK_VERSION: u32 = 1;
-const META_DIRECTORY: &str = ".notes";
-const DATA_DIRECTORY: &str = "data";
-
-// ============================================================
-// 数据结构
-// ============================================================
-
-/// 笔记本元数据（对应 notes.toml 内容）
-#[derive(Serialize, Deserialize, Debug)]
-pub struct NotebookMeta {
-    pub notebook: NotebookInfo,
-    #[serde(default)]
-    pub notes: Vec<NoteMeta>,
-}
-
-/// 笔记本基本信息
-#[derive(Serialize, Deserialize, Debug)]
-pub struct NotebookInfo {
-    pub version: u32,
-    pub created_at: String,
-}
-
-/// 单条笔记的元数据
-#[derive(Serialize, Deserialize, Debug, Clone)]
-pub struct NoteMeta {
-    pub filename: String,
-    pub created_at: String,
-}
-
-/// 单个仓库条目（内存中的注册信息）
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct NotebookEntry {
-    /// 仓库名称
-    pub name: String,
-    /// .notes 目录的完整路径
-    pub path: PathBuf,
-}
-
-/// 全局配置（持久化到用户目录，跨会话保存仓库注册列表）
-#[derive(Debug, Serialize, Deserialize)]
-struct GlobalConfig {
-    notebooks: Vec<NotebookEntry>,
-}
-
-impl GlobalConfig {
-    fn new() -> Self {
-        Self { notebooks: vec![] }
-    }
-
-    fn config_path() -> Option<PathBuf> {
-        dirs::home_dir().map(|p| p.join(".idont").join(GLOBAL_CONFIG_FILENAME))
-    }
-
-    fn load() -> Self {
-        match Self::config_path() {
-            Some(path) if path.exists() => {
-                let content = fs::read_to_string(&path).unwrap_or_default();
-                toml::from_str(&content).unwrap_or_else(|_| Self::new())
-            }
-            _ => Self::new(),
-        }
-    }
-
-    fn save(&self) -> Result<(), StorageError> {
-        let path = Self::config_path()
-            .ok_or_else(|| StorageError::Other("无法确定用户目录".to_string()))?;
-        if let Some(parent) = path.parent() {
-            fs::create_dir_all(parent)?;
-        }
-        let content = toml::to_string_pretty(self)
-            .map_err(|e| StorageError::Other(format!("序列化全局配置失败: {}", e)))?;
-        fs::write(&path, content)?;
-        Ok(())
-    }
-}
-
-// ============================================================
-// Storage 核心结构体
-// ============================================================
+use super::models::{
+    NotebookEntry, NotebookMeta, NotebookInfo, NoteMeta,
+    NOTEBOOK_VERSION, META_FILENAME, META_DIRECTORY, DATA_DIRECTORY,
+    GlobalConfig,
+};
 
 /// 笔记本存储管理（支持多仓库）
 pub struct Storage {
     /// 已注册的仓库列表
     notebooks: Vec<NotebookEntry>,
+    /// 当前选中的仓库索引
+    current_notebook: Option<usize>,
 }
 
 impl Storage {
@@ -100,6 +23,7 @@ impl Storage {
         let config = GlobalConfig::load();
         Self {
             notebooks: config.notebooks,
+            current_notebook: None,
         }
     }
 
@@ -184,6 +108,49 @@ impl Storage {
         self.notebooks.len()
     }
 
+    /// 选中一个仓库（按索引或名称）
+    pub fn select_notebook(&mut self, selector: &str) -> Result<usize, StorageError> {
+        // 先尝试按索引选择
+        if let Ok(index) = selector.parse::<usize>() {
+            if index < self.notebooks.len() {
+                self.current_notebook = Some(index);
+                return Ok(index);
+            }
+            return Err(StorageError::InvalidSelection(
+                format!("索引 {} 超出范围 (共 {} 个仓库)", index, self.notebooks.len()),
+            ));
+        }
+
+        // 按名称选择
+        for (i, nb) in self.notebooks.iter().enumerate() {
+            if nb.name == selector {
+                self.current_notebook = Some(i);
+                return Ok(i);
+            }
+        }
+
+        Err(StorageError::InvalidSelection(
+            format!("未找到名为 '{}' 的仓库", selector),
+        ))
+    }
+
+    /// 获取当前选中的仓库索引
+    pub fn current_notebook_index(&self) -> Option<usize> {
+        self.current_notebook
+    }
+
+    /// 获取当前选中的仓库（返回错误如果未选中）
+    pub fn require_current_notebook(&self) -> Result<&NotebookEntry, StorageError> {
+        let idx = self.current_notebook
+            .ok_or(StorageError::NoNotebookSelected)?;
+        self.get_notebook(idx)
+    }
+
+    /// 获取当前选中的仓库索引（返回错误如果未选中）
+    pub fn require_current_index(&self) -> Result<usize, StorageError> {
+        self.current_notebook.ok_or(StorageError::NoNotebookSelected)
+    }
+
     // ---- 向后兼容方法 ----
 
     /// 检查是否有任何已初始化的仓库
@@ -239,36 +206,13 @@ impl Storage {
 
     /// 在指定仓库的 notes.toml 中追加一条 NoteMeta
     fn append_note_meta(&mut self, notebook_index: usize, filename: &str) -> Result<(), StorageError> {
-        let entry = self.get_notebook(notebook_index)?;
-        let meta_path = entry.path.join(META_FILENAME);
-
-        // 读取现有元数据
-        let mut meta: NotebookMeta = if meta_path.exists() {
-            let content = fs::read_to_string(&meta_path)?;
-            toml::from_str(&content)
-                .map_err(|e| StorageError::Other(format!("解析 notes.toml 失败: {}", e)))?
-        } else {
-            NotebookMeta {
-                notebook: NotebookInfo {
-                    version: NOTEBOOK_VERSION,
-                    created_at: Local::now().to_rfc3339(),
-                },
-                notes: vec![],
-            }
-        };
-
-        // 追加新笔记记录
-        meta.notes.push(NoteMeta {
-            filename: filename.to_string(),
-            created_at: Local::now().to_rfc3339(),
-        });
-
-        // 写回
-        let content = toml::to_string_pretty(&meta)
-            .map_err(|e| StorageError::Other(format!("序列化元数据失败: {}", e)))?;
-        fs::write(&meta_path, content)?;
-
-        Ok(())
+        self.with_notebook_meta_mut(notebook_index, |meta| {
+            meta.notes.push(NoteMeta {
+                filename: filename.to_string(),
+                created_at: Local::now().to_rfc3339(),
+            });
+            Ok(())
+        })
     }
 
     /// 列出指定仓库的所有笔记（从 notes.toml 读取）
@@ -299,6 +243,66 @@ impl Storage {
         };
 
         Ok(entry.path.join(DATA_DIRECTORY).join(normalized))
+    }
+
+    /// 对指定仓库的 notes.toml 执行读-改-写操作（消除重复代码）
+    fn with_notebook_meta_mut<F>(&mut self, notebook_index: usize, op: F) -> Result<(), StorageError>
+    where
+        F: FnOnce(&mut NotebookMeta) -> Result<(), StorageError>,
+    {
+        let entry = self.get_notebook(notebook_index)?;
+        let meta_path = entry.path.join(META_FILENAME);
+
+        // 读取现有元数据
+        let mut meta: NotebookMeta = if meta_path.exists() {
+            let content = fs::read_to_string(&meta_path)?;
+            toml::from_str(&content)
+                .map_err(|e| StorageError::Other(format!("解析 notes.toml 失败: {}", e)))?
+        } else {
+            NotebookMeta {
+                notebook: NotebookInfo {
+                    version: NOTEBOOK_VERSION,
+                    created_at: Local::now().to_rfc3339(),
+                },
+                notes: vec![],
+            }
+        };
+
+        // 执行修改回调
+        op(&mut meta)?;
+
+        // 写回磁盘
+        let content = toml::to_string_pretty(&meta)
+            .map_err(|e| StorageError::Other(format!("序列化元数据失败: {}", e)))?;
+        fs::write(&meta_path, content)?;
+
+        Ok(())
+    }
+
+    /// 从指定仓库的 notes.toml 中移除一条 NoteMeta
+    pub fn remove_note_meta(&mut self, notebook_index: usize, filename: &str) -> Result<(), StorageError> {
+        let filename_owned = filename.to_string();
+        self.with_notebook_meta_mut(notebook_index, |meta| {
+            let before = meta.notes.len();
+            meta.notes.retain(|n| n.filename != filename_owned);
+            if meta.notes.len() == before {
+                return Err(StorageError::NoteNotFound(filename_owned));
+            }
+            Ok(())
+        })
+    }
+
+    /// 更新指定仓库 notes.toml 中的笔记文件名
+    pub fn update_note_filename(&mut self, notebook_index: usize, old: &str, new: &str) -> Result<(), StorageError> {
+        let old_owned = old.to_string();
+        let new_owned = new.to_string();
+        self.with_notebook_meta_mut(notebook_index, |meta| {
+            let found = meta.notes.iter_mut()
+                .find(|n| n.filename == old_owned)
+                .ok_or(StorageError::NoteNotFound(old_owned))?;
+            found.filename = new_owned;
+            Ok(())
+        })
     }
 }
 

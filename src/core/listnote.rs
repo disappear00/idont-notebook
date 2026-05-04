@@ -1,11 +1,9 @@
 
 use crate::storage::{StorageError, Storage};
 
-pub fn listnote(storage: &mut Storage) -> Result<(), StorageError> {
-    if !storage.is_initialized() {
-        return Err(StorageError::NotInitialized);
-    }
-    let notes = storage.list_notes(None)?;
+pub fn listnote(storage: &Storage) -> Result<(), StorageError> {
+    let idx = storage.require_current_index()?;
+    let notes = storage.list_notes(Some(idx))?;
     if notes.is_empty() {
         println!("listnote: 暂无笔记");
     } else {

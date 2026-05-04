@@ -19,6 +19,9 @@ impl IdontCompleter {
             commands: vec![
                 "mknote ",
                 "initlib ",
+                "listlib",
+                "selectlib ",
+                "currentlib",
                 "listnote",
                 "rmnote ",
                 "catnote ",
@@ -62,6 +65,20 @@ impl Highlighter for IdontCompleter {}
 impl Validator for IdontCompleter {}
 impl Helper for IdontCompleter {}
 
+/// 构建 REPL 提示符（显示当前仓库名）
+fn build_prompt(storage: &Storage) -> String {
+    match storage.current_notebook_index() {
+        Some(idx) => {
+            if let Ok(entry) = storage.get_notebook(idx) {
+                format!("idont({})> ", entry.name)
+            } else {
+                "idontnote> ".to_string()
+            }
+        }
+        None => "idontnote> ".to_string(),
+    }
+}
+
 /// 启动 REPL 主循环
 pub fn run(storage: &mut Storage) -> Result<(), Box<dyn std::error::Error>> {
     let completer = IdontCompleter::new();
@@ -73,7 +90,8 @@ pub fn run(storage: &mut Storage) -> Result<(), Box<dyn std::error::Error>> {
     let mut log: Vec<String> = Vec::new();
 
     loop {
-        let line = rl.readline("idontnote> ");
+        let prompt = build_prompt(storage);
+        let line = rl.readline(&prompt);
         match line {
             Ok(input) => {
                 let trimmed = input.trim();
