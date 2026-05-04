@@ -97,7 +97,7 @@ cargo run
   [0] work (D:/notes/work/.notes)
   [1] my-note (D:/notes/personal/.notes)
 > 请输入编号: 0
-# mknote: 笔记已创建 -> D:/notes/work/daily.md
+# mknote: 笔记已创建 -> D:/notes/work/.notes/data/daily.md
 ```
 
 仅一个仓库时直接创建，无需选择。

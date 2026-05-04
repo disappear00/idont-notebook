@@ -9,6 +9,7 @@ const GLOBAL_CONFIG_FILENAME: &str = "idont-notebook-config.toml";
 const META_FILENAME: &str = "notes.toml";
 const NOTEBOOK_VERSION: u32 = 1;
 const META_DIRECTORY: &str = ".notes";
+const DATA_DIRECTORY: &str = "data";
 
 // ============================================================
 // 数据结构
@@ -125,8 +126,8 @@ impl Storage {
             ));
         }
 
-        // 创建 .notes 目录
-        fs::create_dir_all(&notes_dir)?;
+        // 创建 .notes 目录（含 data 子目录）
+        fs::create_dir_all(notes_dir.join(DATA_DIRECTORY))?;
 
         // 生成初始元数据
         let repo_name = name
@@ -218,10 +219,9 @@ impl Storage {
             format!("{}.md", filename)
         };
 
-        // 笔记内容放在 .notes 的上级目录
-        let content_dir = entry.path.parent()
-            .ok_or_else(|| StorageError::Other("无效的仓库路径".to_string()))?;
-        let note_full_path = content_dir.join(&normalized_name);
+        // 笔记内容放在 .notes/data 目录内部
+        let data_dir = entry.path.join(DATA_DIRECTORY);
+        let note_full_path = data_dir.join(&normalized_name);
 
         // 检查是否已存在
         if note_full_path.exists() {
@@ -291,8 +291,6 @@ impl Storage {
     /// 获取指定笔记的完整路径
     pub fn get_note_path(&self, notebook_index: usize, filename: &str) -> Result<PathBuf, StorageError> {
         let entry = self.get_notebook(notebook_index)?;
-        let content_dir = entry.path.parent()
-            .ok_or_else(|| StorageError::Other("无效的仓库路径".to_string()))?;
 
         let normalized = if filename.ends_with(".md") {
             filename.to_string()
@@ -300,7 +298,7 @@ impl Storage {
             format!("{}.md", filename)
         };
 
-        Ok(content_dir.join(normalized))
+        Ok(entry.path.join(DATA_DIRECTORY).join(normalized))
     }
 }
 
