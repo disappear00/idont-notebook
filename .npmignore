@@ -1,0 +1,13 @@
+# Only include built binaries and essential files
+src/
+target/
+Cargo.lock
+Cargo.toml
+*.md
+!README.md
+!.npmignore
+!.gitignore
+.github/
+tests/
+examples/
+scripts/

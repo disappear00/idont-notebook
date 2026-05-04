@@ -31,9 +31,29 @@
 
 ---
 
-## 快速开始
+## 安装
 
-### 编译
+### 方式一：npm（推荐）
+
+```bash
+npm install -g idont-notebook
+```
+
+安装后直接运行：
+
+```bash
+idontnote
+```
+
+> 支持 Windows / macOS（Intel + Apple Silicon） / Linux（x86_64 + ARM64）
+
+### 方式二：Cargo
+
+```bash
+cargo install idont-notebook
+```
+
+### 方式三：本地编译
 
 ```bash
 cargo build --release
@@ -44,9 +64,9 @@ cargo build --release
 ### 运行
 
 ```bash
-cargo run
-# 或
-./target/release/idontnote
+idontnote
+# 或本地编译后：
+# ./target/release/idontnote
 ```
 
 ---
@@ -166,3 +186,17 @@ idont-notebook/
 ## License
 
 MIT
+
+## 发布流程
+
+1. 更新 `Cargo.toml` 和 `package.json` 中的版本号
+2. 打 tag 并推送：
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+3. GitHub Actions 自动编译 6 个平台并发布到 [npm](https://www.npmjs.com/package/idont-notebook)
+
+> **前置条件**：在 GitHub repo 的 Settings > Secrets 中配置 `NPM_TOKEN`（从 [npmjs.com](https://www.npmjs.com) 获取 Automation token）

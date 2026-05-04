@@ -1,0 +1,115 @@
+name: Build & Publish to npm
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-publish:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            rust: stable
+          - os: ubuntu-latest
+            target: aarch64-unknown-linux-gnu
+            rust: stable
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            rust: stable
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            rust: stable
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            rust: stable
+          - os: windows-latest
+            target: aarch64-pc-windows-msvc
+            rust: stable
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      # Cross-compilation for aarch64-linux needs extra setup
+      - name: Install cross-compilation tools (aarch64-linux)
+        if: matrix.target == 'aarch64-unknown-linux-gnu'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-aarch64-linux-gnu
+
+      - name: Set cross compilation env (aarch64-linux)
+        if: matrix.target == 'aarch64-unknown-linux-gnu'
+        run: |
+          echo "CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER=aarch64-linux-gnu-gcc" >> $GITHUB_ENV
+          echo "CC_aarch64_unknown_linux_gnu=aarch64-linux-gnu-gcc" >> $GITHUB_ENV
+
+      - name: Build release binary
+        run: cargo build --release --target=${{ matrix.target }}
+
+      - name: Prepare binary (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          cp target/${{ matrix.target }}/release/idontnote.exe bin/idontnote-${{ matrix.target }} 2>/dev/null || \
+          cp target/${{ matrix.target }}/release/idontnote bin/idontnote-${{ matrix.target }}
+          chmod +x bin/idontnote-${{ matrix.target }}
+
+      - name: Prepare binary (Windows)
+        if: runner.os == 'Windows'
+        run: copy target\${{ matrix.target }}\release\idontnote.exe bin\idontnote-${{ matrix.target }}.exe
+
+      - name: Upload binary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary-${{ matrix.target }}
+          path: bin/
+          retention-days: 1
+
+  publish-npm:
+    needs: build-and-publish
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write  # for npm provenance
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      # Download all built binaries into bin/
+      - name: Download all binaries
+        uses: actions/download-artifact@v4
+        with:
+          pattern: binary-*
+          path: bin/
+          merge-multiple: true
+
+      - name: List binaries
+        run: ls -la bin/
+
+      - name: Set version from tag
+        run: echo "TAG_VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+
+      - name: Update package.json version
+        run: node -e "const p=require('./package.json'); p.version='${{ env.TAG_VERSION }}'; require('fs').writeFileSync('package.json', JSON.stringify(p, null, 2) + '\\n')"
+
+      - name: Publish to npm
+        run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
