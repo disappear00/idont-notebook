@@ -292,18 +292,6 @@ impl Storage {
         })
     }
 
-    /// 更新指定仓库 notes.toml 中的笔记文件名
-    pub fn update_note_filename(&mut self, notebook_index: usize, old: &str, new: &str) -> Result<(), StorageError> {
-        let old_owned = old.to_string();
-        let new_owned = new.to_string();
-        self.with_notebook_meta_mut(notebook_index, |meta| {
-            let found = meta.notes.iter_mut()
-                .find(|n| n.filename == old_owned)
-                .ok_or(StorageError::NoteNotFound(old_owned))?;
-            found.filename = new_owned;
-            Ok(())
-        })
-    }
 }
 
 /// 默认实现 Default trait

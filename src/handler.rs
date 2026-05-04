@@ -37,28 +37,9 @@ pub fn handle_rmnote(storage: &mut Storage, filename: &str) -> Result<(), Storag
     rmnote::rmnote(storage, filename)
 }
 
-/// 处理 catnote 命令
-pub fn handle_catnote(storage: &mut Storage, filename: &str) -> Result<(), StorageError> {
-    catnote::catnote(storage, filename)
-}
-
 /// 处理 editnote 命令
 pub fn handle_editnote(storage: &mut Storage, filename: &str) -> Result<(), StorageError> {
     editnote::editnote(storage, filename)
-}
-
-/// 处理 renote 命令
-pub fn handle_renote(
-    storage: &mut Storage,
-    old: &str,
-    new: &str,
-) -> Result<(), StorageError> {
-    renote::renote(storage, old, new)
-}
-
-/// 处理 searchnote 命令
-pub fn handle_searchnote(storage: &mut Storage, keyword: &str) -> Result<(), StorageError> {
-    searchnote::searchnote(storage, keyword)
 }
 
 /// 处理 listlog 命令
@@ -81,10 +62,7 @@ pub fn dispatch(storage: &mut Storage, log: &[String], cmd: Command) -> Result<b
         Command::Currentlib => handle_currentlib(storage)?,
         Command::Listnote => handle_listnote(storage)?,
         Command::Rmnote(filename) => handle_rmnote(storage, &filename)?,
-        Command::Catnote(filename) => handle_catnote(storage, &filename)?,
         Command::Editnote(filename) => handle_editnote(storage, &filename)?,
-        Command::Renote(old, new) => handle_renote(storage, &old, &new)?,
-        Command::Searchnote(keyword) => handle_searchnote(storage, &keyword)?,
         Command::Listlog => handle_listlog(log)?,
         Command::Help => handle_help()?,
         Command::Exit => return Ok(true),

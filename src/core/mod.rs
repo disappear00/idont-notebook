@@ -1,4 +1,3 @@
-pub mod catnote;
 pub mod currentlib;
 pub mod editnote;
 pub mod help;
@@ -7,7 +6,5 @@ pub mod listlib;
 pub mod listlog;
 pub mod listnote;
 pub mod mknote;
-pub mod renote;
 pub mod rmnote;
-pub mod searchnote;
 pub mod selectlib;

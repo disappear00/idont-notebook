@@ -9,12 +9,11 @@
 - **TOML 元数据** — 每个仓库使用 `notes.toml` 管理笔记索引与元信息
 - **跨会话持久化** — 仓库注册信息保存在用户主目录，重启后不丢失
 - **Markdown / 文本** — 原生支持 `.md` 格式
+- **安全删除** — `rmnote` 需二次确认，防止误删
 
 ---
 
-## 当前进度
-
-### ✅ 已完成
+## 命令一览
 
 | 命令 | 说明 |
 |------|------|
@@ -24,11 +23,9 @@
 | `currentlib` | 显示当前选中的仓库 |
 | `mknote <filename>` | 在当前选中仓库创建笔记 |
 | `listnote` | 列出当前仓库的所有笔记 |
-| `catnote <filename>` | 查看笔记内容 |
-| `editnote <filename>` | 用系统编辑器打开笔记 |
-| `rmnote <filename>` | 删除笔记（物理文件 + 元数据） |
-| `renote <old> <new>` | 重命名笔记（物理文件 + 元数据） |
-| `searchnote <keyword>` | 搜索笔记内容 |
+| `editnote <filename>` | 查看/编辑笔记（调用系统编辑器） |
+| `rmnote <filename>` | 删除笔记（需确认，物理文件 + 元数据） |
+| `listlog` | 显示本次会话的命令历史 |
 | `help` | 显示帮助 |
 | `exit` / `quit` | 退出 REPL |
 
@@ -90,15 +87,12 @@ idont(work)> listnote
 # listnote: 共 1 篇笔记
 #   - daily.md (创建于 2026-05-04T22:30:00+08:00)
 
-idont(work)> catnote daily.md
-# (显示文件内容)
-
 idont(work)> editnote daily.md
-# (调用系统编辑器打开)
+# (调用系统编辑器打开，可查看和编辑)
 
-idont(work)> searchnote 会议
-# searchnote: 找到 1 个匹配:
-#   daily.md: 今天下午3点开会讨论...
+idont(work)> rmnote daily.md
+# rmnote: 确定删除笔记 daily.md？[y/N] y
+# rmnote: 已删除笔记 daily.md
 ```
 
 ### 切换仓库
@@ -138,11 +132,8 @@ idont-notebook/
 │       ├── currentlib.rs   # 显示当前仓库
 │       ├── mknote.rs       # 创建笔记
 │       ├── listnote.rs     # 列出笔记
-│       ├── catnote.rs      # 查看笔记内容
-│       ├── editnote.rs     # 编辑笔记（系统编辑器）
-│       ├── rmnote.rs       # 删除笔记
-│       ├── renote.rs       # 重命名笔记
-│       ├── searchnote.rs   # 搜索笔记
+│       ├── editnote.rs     # 查看/编辑笔记（系统编辑器）
+│       ├── rmnote.rs       # 删除笔记（含确认提示）
 │       ├── listlog.rs      # 会话历史
 │       └── help.rs         # 帮助信息
 ```

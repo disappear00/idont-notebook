@@ -14,14 +14,8 @@ pub enum Command {
     Listnote,
     /// rmnote <filename> — 删除笔记
     Rmnote(String),
-    /// catnote <filename> — 查看笔记内容
-    Catnote(String),
-    /// editnote <filename> — 用系统编辑器打开笔记
+    /// editnote <filename> — 查看/编辑笔记（用系统编辑器打开）
     Editnote(String),
-    /// renote <old> <new> — 重命名笔记
-    Renote(String, String),
-    /// searchnote <keyword> — 搜索笔记内容
-    Searchnote(String),
     /// listlog — 显示本次会话的命令历史
     Listlog,
     /// help — 显示帮助
@@ -70,22 +64,9 @@ pub fn parse(input: &str) -> Result<Command, String> {
             let name = parts.get(1).ok_or("用法: rmnote <filename>")?;
             Ok(Command::Rmnote(name.trim().to_string()))
         }
-        "catnote" => {
-            let name = parts.get(1).ok_or("用法: catnote <filename>")?;
-            Ok(Command::Catnote(name.trim().to_string()))
-        }
         "editnote" => {
             let name = parts.get(1).ok_or("用法: editnote <filename>")?;
             Ok(Command::Editnote(name.trim().to_string()))
-        }
-        "renote" => {
-            let old = parts.get(1).ok_or("用法: renote <old> <new>")?;
-            let new = parts.get(2).ok_or("用法: renote <old> <new>")?;
-            Ok(Command::Renote(old.trim().to_string(), new.trim().to_string()))
-        }
-        "searchnote" => {
-            let keyword = parts.get(1).ok_or("用法: searchnote <keyword>")?;
-            Ok(Command::Searchnote(keyword.trim().to_string()))
         }
         "listlog" => Ok(Command::Listlog),
         "help" => Ok(Command::Help),

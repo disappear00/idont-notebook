@@ -11,11 +11,8 @@ pub fn help()-> Result<(), StorageError> {
     println!("  笔记操作（需先 selectlib）:");
     println!("    mknote <filename>            创建笔记（支持 .md / .txt）");
     println!("    listnote                     列出当前仓库所有笔记");
-    println!("    catnote <filename>           查看笔记内容");
-    println!("    editnote <filename>          用编辑器打开笔记");
+    println!("    editnote <filename>          查看/编辑笔记");
     println!("    rmnote <filename>            删除笔记");
-    println!("    renote <old> <new>           重命名笔记");
-    println!("    searchnote <keyword>         搜索笔记内容");
     println!();
     println!("  其他:");
     println!("    listlog                      显示本次会话的命令历史");
