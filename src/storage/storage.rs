@@ -57,7 +57,7 @@ impl GlobalConfig {
     }
 
     fn config_path() -> Option<PathBuf> {
-        dirs::home_dir().map(|p| p.join(GLOBAL_CONFIG_FILENAME))
+        dirs::home_dir().map(|p| p.join(".idont").join(GLOBAL_CONFIG_FILENAME))
     }
 
     fn load() -> Self {
@@ -73,6 +73,9 @@ impl GlobalConfig {
     fn save(&self) -> Result<(), StorageError> {
         let path = Self::config_path()
             .ok_or_else(|| StorageError::Other("无法确定用户目录".to_string()))?;
+        if let Some(parent) = path.parent() {
+            fs::create_dir_all(parent)?;
+        }
         let content = toml::to_string_pretty(self)
             .map_err(|e| StorageError::Other(format!("序列化全局配置失败: {}", e)))?;
         fs::write(&path, content)?;

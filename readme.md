@@ -152,7 +152,8 @@ idont-notebook/
 
 ```
 用户主目录/
-└── idont-notebook-config.toml    # 全局配置（已注册仓库列表，跨会话持久化）
+└── .idont/
+    └── idont-notebook-config.toml    # 全局配置（已注册仓库列表，跨会话持久化）
 
 <仓库路径>/
 ├── .notes/
