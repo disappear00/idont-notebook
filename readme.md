@@ -186,17 +186,3 @@ idont-notebook/
 ## License
 
 MIT
-
-## 发布流程
-
-1. 更新 `Cargo.toml` 和 `package.json` 中的版本号
-2. 打 tag 并推送：
-
-```bash
-git tag v0.1.0
-git push origin v0.1.0
-```
-
-3. GitHub Actions 自动编译 6 个平台并发布到 [npm](https://www.npmjs.com/package/idont-notebook)
-
-> **前置条件**：在 GitHub repo 的 Settings > Secrets 中配置 `NPM_TOKEN`（从 [npmjs.com](https://www.npmjs.com) 获取 Automation token）
