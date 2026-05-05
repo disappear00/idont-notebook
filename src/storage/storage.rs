@@ -179,12 +179,13 @@ impl Storage {
     pub fn create_note(&mut self, notebook_index: usize, filename: &str) -> Result<PathBuf, StorageError> {
         let entry = self.get_notebook(notebook_index)?;
 
-        // 确保文件名以 .md 结尾
-        let normalized_name = if filename.ends_with(".md") {
-            filename.to_string()
-        } else {
-            format!("{}.md", filename)
-        };
+        // 要求文件名必须包含扩展名
+        if std::path::Path::new(filename).extension().is_none() {
+            return Err(StorageError::Other(
+                format!("请为文件名添加后缀，例如: {}.md", filename),
+            ));
+        }
+        let normalized_name = filename.to_string();
 
         // 笔记内容放在 .notes/data 目录内部
         let data_dir = entry.path.join(DATA_DIRECTORY);
@@ -236,13 +237,13 @@ impl Storage {
     pub fn get_note_path(&self, notebook_index: usize, filename: &str) -> Result<PathBuf, StorageError> {
         let entry = self.get_notebook(notebook_index)?;
 
-        let normalized = if filename.ends_with(".md") {
-            filename.to_string()
-        } else {
-            format!("{}.md", filename)
-        };
+        if std::path::Path::new(filename).extension().is_none() {
+            return Err(StorageError::Other(
+                format!("请为文件名添加后缀，例如: {}.md", filename),
+            ));
+        }
 
-        Ok(entry.path.join(DATA_DIRECTORY).join(normalized))
+        Ok(entry.path.join(DATA_DIRECTORY).join(filename))
     }
 
     /// 对指定仓库的 notes.toml 执行读-改-写操作（消除重复代码）
