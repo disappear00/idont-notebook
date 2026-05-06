@@ -35,40 +35,40 @@ pub fn parse(input: &str) -> Result<Command, String> {
     let cmd = parts[0];
 
     match cmd {
-        "mknote" => {
-            let name = parts.get(1).ok_or("用法: mknote <filename>")?;
+        "mknote" | "mk" => {
+            let name = parts.get(1).ok_or("用法: mknote <filename> (别名: mk)")?;
             let name = name.trim();
             validate_note_filename(name)?;
             Ok(Command::Mknote(name.to_string()))
         }
-        "initlib" => {
-            let path = parts.get(1).ok_or("用法: initlib <path>")?;
+        "initlib" | "il" => {
+            let path = parts.get(1).ok_or("用法: initlib <path> (别名: il)")?;
             let path = path.trim();
             if path.is_empty() {
                 return Err("路径不能为空".into());
             }
             Ok(Command::Initlib(path.to_string()))
         }
-        "listlib" => Ok(Command::Listlib),
-        "selectlib" => {
-            let selector = parts.get(1).ok_or("用法: selectlib <编号或名称>")?;
+        "listlib" | "ll" => Ok(Command::Listlib),
+        "selectlib" | "sl" => {
+            let selector = parts.get(1).ok_or("用法: selectlib <编号或名称> (别名: sl)")?;
             let selector = selector.trim();
             if selector.is_empty() {
                 return Err("请指定仓库编号或名称".into());
             }
             Ok(Command::Selectlib(selector.to_string()))
         }
-        "currentlib" => Ok(Command::Currentlib),
-        "listnote" => Ok(Command::Listnote),
-        "rmnote" => {
-            let name = parts.get(1).ok_or("用法: rmnote <filename>")?;
+        "currentlib" | "cl" => Ok(Command::Currentlib),
+        "listnote" | "ls" => Ok(Command::Listnote),
+        "rmnote" | "rm" => {
+            let name = parts.get(1).ok_or("用法: rmnote <filename> (别名: rm)")?;
             Ok(Command::Rmnote(name.trim().to_string()))
         }
-        "editnote" => {
-            let name = parts.get(1).ok_or("用法: editnote <filename>")?;
+        "editnote" | "ed" => {
+            let name = parts.get(1).ok_or("用法: editnote <filename> (别名: ed)")?;
             Ok(Command::Editnote(name.trim().to_string()))
         }
-        "listlog" => Ok(Command::Listlog),
+        "listlog" | "log" => Ok(Command::Listlog),
         "help" => Ok(Command::Help),
         "exit" | "quit" => Ok(Command::Exit),
         _ => Err(format!("未知命令: {}，输入 help 查看帮助", cmd)),
