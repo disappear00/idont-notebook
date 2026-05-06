@@ -8,9 +8,11 @@ use crate::command;
 use crate::handler;
 use crate::storage::Storage;
 
-/// 命令补全器
+/// 命令补全器（支持上下文感知）
 struct IdontCompleter {
     commands: Vec<&'static str>,
+    notebook_names: Vec<String>,
+    note_filenames: Vec<String>,
 }
 
 impl IdontCompleter {
@@ -39,7 +41,28 @@ impl IdontCompleter {
                 "exit",
                 "quit",
             ],
+            notebook_names: Vec::new(),
+            note_filenames: Vec::new(),
         }
+    }
+
+    /// 从 Storage 刷新补全数据
+    fn refresh(&mut self, storage: &Storage) {
+        self.notebook_names = storage.list_notebooks().iter()
+            .map(|e| e.name.clone())
+            .collect();
+        // 使用当前选中的仓库索引来列出笔记
+        let idx = storage.current_notebook_index();
+        if let Ok(notes) = storage.list_notes(idx) {
+            self.note_filenames = notes.into_iter()
+                .map(|m| m.filename)
+                .collect();
+        }
+    }
+
+    /// 判断输入是否匹配指定命令（含别名）
+    fn is_command(input: &str, cmd_name: &str, alias: &str) -> bool {
+        input == cmd_name || input == alias
     }
 }
 
@@ -53,13 +76,48 @@ impl Completer for IdontCompleter {
         _ctx: &Context<'_>,
     ) -> rustyline::Result<(usize, Vec<String>)> {
         let input = &line[..pos];
-        let matches: Vec<String> = self
-            .commands
-            .iter()
-            .filter(|cmd| cmd.starts_with(input))
-            .map(|s| s.to_string())
-            .collect();
-        Ok((0, matches))
+
+        // 解析输入：分离已输入的命令和当前参数
+        let parts: Vec<&str> = input.split_whitespace().collect();
+
+        match parts.len() {
+            0 | 1 => {
+                // 正在输入命令名 → 补全命令列表
+                let matches: Vec<String> = self.commands.iter()
+                    .filter(|cmd| cmd.starts_with(input))
+                    .map(|s| s.to_string())
+                    .collect();
+                Ok((0, matches))
+            }
+            _ => {
+                // 已有命令前缀 → 上下文感知参数补全
+                let cmd = parts[0];
+                let arg_input = parts.last().unwrap().to_string();
+                let start_pos = pos - arg_input.len();
+
+                let candidates = if IdontCompleter::is_command(cmd, "selectlib", "sl")
+                    || IdontCompleter::is_command(cmd, "initlib", "il")
+                {
+                    // 补全仓库名
+                    self.notebook_names.iter()
+                        .filter(|name| name.starts_with(&arg_input))
+                        .cloned()
+                        .collect()
+                } else if IdontCompleter::is_command(cmd, "rmnote", "rm")
+                    || IdontCompleter::is_command(cmd, "editnote", "ed")
+                {
+                    // 补全笔记文件名
+                    self.note_filenames.iter()
+                        .filter(|name| name.starts_with(&arg_input))
+                        .cloned()
+                        .collect()
+                } else {
+                    Vec::new()
+                };
+
+                Ok((start_pos, candidates))
+            }
+        }
     }
 }
 
@@ -96,6 +154,11 @@ pub fn run(storage: &mut Storage) -> Result<(), Box<dyn std::error::Error>> {
     let mut log: Vec<String> = Vec::new();
 
     loop {
+        // 刷新补全数据（同步仓库/笔记列表）
+        if let Some(helper) = rl.helper_mut() {
+            helper.refresh(storage);
+        }
+
         let prompt = build_prompt(storage);
         let line = rl.readline(&prompt);
         match line {
