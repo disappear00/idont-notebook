@@ -1,6 +1,6 @@
 {
     "name": "idont-notebook",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "description": "A lightweight notebook CLI tool — manage notes in markdown/text with REPL interface",
     "keywords": [
         "notebook",
