@@ -12,6 +12,7 @@ pub fn help()-> Result<(), StorageError> {
     println!("    mknote <filename>      (mk)  创建笔记（支持 .md / .txt）");
     println!("    listnote               (ls)  列出当前仓库所有笔记");
     println!("    editnote <filename>    (ed)  查看/编辑笔记");
+    println!("    catnote <filename>     (ca)  打印笔记内容 [-n 行数] [-t 行数]");
     println!("    rmnote <filename>      (rm)  删除笔记");
     println!();
     println!("  其他:");

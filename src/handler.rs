@@ -42,6 +42,11 @@ pub fn handle_editnote(storage: &mut Storage, filename: &str) -> Result<(), Stor
     editnote::editnote(storage, filename)
 }
 
+/// 处理 catnote 命令
+pub fn handle_catnote(storage: &Storage, filename: &str, head: Option<usize>, tail: Option<usize>) -> Result<(), StorageError> {
+    catnote::catnote(storage, filename, head, tail)
+}
+
 /// 处理 listlog 命令
 pub fn handle_listlog(log: &[String]) -> Result<(),StorageError>  {
     listlog::listlog(log)
@@ -63,6 +68,7 @@ pub fn dispatch(storage: &mut Storage, log: &[String], cmd: Command) -> Result<b
         Command::Listnote => handle_listnote(storage)?,
         Command::Rmnote(filename) => handle_rmnote(storage, &filename)?,
         Command::Editnote(filename) => handle_editnote(storage, &filename)?,
+        Command::Catnote { filename, head, tail } => handle_catnote(storage, &filename, head, tail)?,
         Command::Listlog => handle_listlog(log)?,
         Command::Help => handle_help()?,
         Command::Exit => return Ok(true),

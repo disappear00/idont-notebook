@@ -1,3 +1,4 @@
+pub mod catnote;
 pub mod currentlib;
 pub mod editnote;
 pub mod help;

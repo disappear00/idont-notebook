@@ -16,6 +16,8 @@ pub enum Command {
     Rmnote(String),
     /// editnote <filename> — 查看/编辑笔记（用系统编辑器打开）
     Editnote(String),
+    /// catnote <filename> [-n <lines>] [-t <lines>] — 打印笔记内容
+    Catnote { filename: String, head: Option<usize>, tail: Option<usize> },
     /// listlog — 显示本次会话的命令历史
     Listlog,
     /// help — 显示帮助
@@ -67,6 +69,39 @@ pub fn parse(input: &str) -> Result<Command, String> {
         "editnote" | "ed" => {
             let name = parts.get(1).ok_or("用法: editnote <filename> (别名: ed)")?;
             Ok(Command::Editnote(name.trim().to_string()))
+        }
+        "catnote" | "ca" => {
+            let all_parts: Vec<&str> = input.split_whitespace().collect();
+            if all_parts.len() < 2 {
+                return Err("用法: catnote <filename> [-n <lines>] [-t <lines>] (别名: ca)".into());
+            }
+            let name = all_parts[1];
+            validate_note_filename(name)?;
+            let mut head: Option<usize> = None;
+            let mut tail: Option<usize> = None;
+            let mut i = 2;
+            while i < all_parts.len() {
+                match all_parts[i] {
+                    "-n" => {
+                        i += 1;
+                        let val = all_parts.get(i).ok_or("用法: -n <行数>")?;
+                        head = Some(val.parse::<usize>()
+                            .map_err(|_| format!("无效的行数: {}", val))?);
+                    }
+                    "-t" => {
+                        i += 1;
+                        let val = all_parts.get(i).ok_or("用法: -t <行数>")?;
+                        tail = Some(val.parse::<usize>()
+                            .map_err(|_| format!("无效的行数: {}", val))?);
+                    }
+                    other => return Err(format!("未知选项: {}", other)),
+                }
+                i += 1;
+            }
+            if head.is_some() && tail.is_some() {
+                return Err("-n 和 -t 不能同时使用".into());
+            }
+            Ok(Command::Catnote { filename: name.to_string(), head, tail })
         }
         "listlog" | "log" => Ok(Command::Listlog),
         "help" => Ok(Command::Help),

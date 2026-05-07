@@ -35,6 +35,8 @@ impl IdontCompleter {
                 "rm ",
                 "editnote ",
                 "ed ",
+                "catnote ",
+                "ca ",
                 "listlog",
                 "log",
                 "help",
