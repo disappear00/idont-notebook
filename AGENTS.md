@@ -45,7 +45,7 @@ src/
 ## Conventions
 
 - **All user-facing text is in Chinese** (error messages, help output, REPL prompts)
-- Commands have short aliases: `mk`, `il`, `sl`, `cl`, `ls`, `rm`, `ed`, `log`
+- Commands have short aliases: `mk`, `il`, `sl`, `cl`, `ls`, `rm`, `ed`, `ca`, `log`
 - Notes must end in `.md` or `.txt` (enforced in `command.rs:validate_note_filename`)
 - `rmnote` prompts for confirmation before deletion
 - REPL prompt shows current notebook: `idont(<name>)> `

@@ -24,6 +24,7 @@
 | `mknote <filename>` | 在当前选中仓库创建笔记 |
 | `listnote` | 列出当前仓库的所有笔记 |
 | `editnote <filename>` | 查看/编辑笔记（调用系统编辑器） |
+| `catnote <filename> [-n 行数] [-t 行数]` (`ca`) | 打印笔记内容（前 N 行 / 后 N 行） |
 | `rmnote <filename>` | 删除笔记（需确认，物理文件 + 元数据） |
 | `listlog` | 显示本次会话的命令历史 |
 | `help` | 显示帮助 |
@@ -110,6 +111,15 @@ idont(work)> listnote
 idont(work)> editnote daily.md
 # (调用系统编辑器打开，可查看和编辑)
 
+idont(work)> catnote daily.md
+# (打印笔记全部内容)
+
+idont(work)> catnote daily.md -n 5
+# (打印前 5 行)
+
+idont(work)> catnote daily.md -t 3
+# (打印后 3 行)
+
 idont(work)> rmnote daily.md
 # rmnote: 确定删除笔记 daily.md？[y/N] y
 # rmnote: 已删除笔记 daily.md
@@ -153,6 +163,7 @@ idont-notebook/
 │       ├── mknote.rs       # 创建笔记
 │       ├── listnote.rs     # 列出笔记
 │       ├── editnote.rs     # 查看/编辑笔记（系统编辑器）
+│       ├── catnote.rs      # 打印笔记内容（head/tail）
 │       ├── rmnote.rs       # 删除笔记（含确认提示）
 │       ├── listlog.rs      # 会话历史
 │       └── help.rs         # 帮助信息
