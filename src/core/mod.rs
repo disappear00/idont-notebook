@@ -9,3 +9,5 @@ pub mod listnote;
 pub mod mknote;
 pub mod rmnote;
 pub mod selectlib;
+pub mod track;
+pub mod untrack;
