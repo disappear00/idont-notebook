@@ -5,10 +5,13 @@
 ## 功能特性
 
 - **多仓库管理** — 通过 `initlib` 注册多个独立笔记目录，`selectlib` 切换上下文
+- **任意文件类型** — 不限于 `.md`/`.txt`，支持任意文件格式
+- **磁盘扫描** — 直接扫描 `.notes/data/` 目录，手动放入的文件自动可见
+- **文件隐藏** — `untrack` 隐藏不需要显示的文件，`track` 恢复显示
 - **REPL 交互模式** — 基于 `rustyline` 提供友好的命令行交互体验（历史记录、自动补全、动态 prompt）
-- **TOML 元数据** — 每个仓库使用 `notes.toml` 管理笔记索引与元信息
+- **系统默认打开** — `editnote` 使用系统默认程序打开文件（支持 WSL）
+- **TOML 元数据** — 每个仓库使用 `notes.toml` 管理隐藏列表
 - **跨会话持久化** — 仓库注册信息保存在用户主目录，重启后不丢失
-- **Markdown / 文本** — 原生支持 `.md` 格式
 - **安全删除** — `rmnote` 需二次确认，防止误删
 
 ---
@@ -17,15 +20,17 @@
 
 | 命令 | 说明 |
 |------|------|
-| `initlib <path> [name]` | 注册笔记仓库，支持自定义名称 |
+| `initlib <path> [name]` | 注册笔记仓库（已存在的 `.notes` 可直接注册） |
 | `listlib` | 列出所有已注册仓库（标记当前选中项） |
 | `selectlib <编号或名称>` | 选中一个仓库作为操作上下文 |
 | `currentlib` | 显示当前选中的仓库 |
-| `mknote <filename>` | 在当前选中仓库创建笔记 |
-| `listnote` | 列出当前仓库的所有笔记 |
-| `editnote <filename>` | 查看/编辑笔记（调用系统编辑器） |
-| `catnote <filename> [-n 行数] [-t 行数]` (`ca`) | 打印笔记内容（前 N 行 / 后 N 行） |
-| `rmnote <filename>` | 删除笔记（需确认，物理文件 + 元数据） |
+| `mknote <filename>` | 在当前选中仓库创建笔记（任意类型） |
+| `listnote [-a]` | 列出笔记（`-a` 显示全部含已隐藏文件） |
+| `editnote <filename>` | 用系统默认程序打开文件 |
+| `catnote <filename> [-n 行数] [-t 行数]` | 打印笔记内容（前 N 行 / 后 N 行），二进制文件提示用 editnote |
+| `rmnote <filename>` | 删除笔记（需确认） |
+| `track <filename>` | 恢复显示被隐藏的文件 |
+| `untrack <filename>` | 隐藏文件（不删除，仅不显示） |
 | `listlog` | 显示本次会话的命令历史 |
 | `help` | 显示帮助 |
 | `exit` / `quit` | 退出 REPL |
@@ -62,14 +67,6 @@ cargo build --release
 
 编译产物位于 `target/release/idontnote`。
 
-### 运行
-
-```bash
-idontnote
-# 或本地编译后：
-# ./target/release/idontnote
-```
-
 ---
 
 ## 使用指南
@@ -83,6 +80,8 @@ idontnote> initlib D:/notes/work
 idontnote> initlib D:/notes/personal my-note
 # 仓库 "my-note" 已注册 (#1)，路径: D:/notes/personal/.notes
 ```
+
+如果目录下已有 `.notes`，会直接注册而不会报错。
 
 ### 选择仓库
 
@@ -104,37 +103,51 @@ prompt 会动态显示当前仓库名称。也可以按名称选择：`selectlib
 idont(work)> mknote daily.md
 # mknote: 笔记已创建 -> D:/notes/work/.notes/data/daily.md
 
+idont(work)> mknote image.png
+# mknote: 笔记已创建 -> D:/notes/work/.notes/data/image.png
+
 idont(work)> listnote
-# listnote: 共 1 篇笔记
-#   - daily.md (创建于 2026-05-04T22:30:00+08:00)
+# listnote: 共 2 篇笔记
+#   - image.png
+#   - daily.md
 
 idont(work)> editnote daily.md
-# (调用系统编辑器打开，可查看和编辑)
+# (用系统默认程序打开)
 
 idont(work)> catnote daily.md
 # (打印笔记全部内容)
 
 idont(work)> catnote daily.md -n 5
 # (打印前 5 行)
-
-idont(work)> catnote daily.md -t 3
-# (打印后 3 行)
-
-idont(work)> rmnote daily.md
-# rmnote: 确定删除笔记 daily.md？[y/N] y
-# rmnote: 已删除笔记 daily.md
 ```
 
-### 切换仓库
+### 手动管理文件
+
+直接往 `.notes/data/` 目录放入文件，`listnote` 会自动显示：
 
 ```text
-idont(work)> selectlib my-note
-# 已切换到仓库 [1] my-note
-idont(my-note)> listnote
-# listnote: 共 0 篇笔记
+idont(work)> listnote
+# listnote: 共 3 篇笔记
+#   - image.png
+#   - notes.txt
+#   - daily.md
 
-idont(my-note)> currentlib
-# 当前仓库: my-note (#1), 路径: D:/notes/personal/.notes
+idont(work)> untrack image.png
+# untrack: 已隐藏 image.png（文件仍保留在磁盘上）
+
+idont(work)> listnote
+# listnote: 共 2 篇笔记
+#   - notes.txt
+#   - daily.md
+
+idont(work)> listnote -a
+# listnote: .notes/data/ 共 3 个文件
+#        image.png
+#   -    notes.txt
+#   -    daily.md
+
+idont(work)> track image.png
+# track: 已恢复显示 image.png
 ```
 
 ---
@@ -151,9 +164,9 @@ idont-notebook/
 │   ├── repl.rs             # REPL 循环 (rustyline, 动态 prompt)
 │   ├── storage/            # 存储层
 │   │   ├── mod.rs          # pub re-export
-│   │   ├── models.rs       # 数据结构 (NotebookMeta, NoteMeta, NotebookEntry, GlobalConfig) + 常量
+│   │   ├── models.rs       # 数据结构 (NotebookMeta, TrackingInfo, NotebookEntry, GlobalConfig) + 常量
 │   │   ├── config.rs       # GlobalConfig 持久化 (load/save)
-│   │   ├── storage.rs      # Storage 结构体 (仓库管理、笔记 CRUD、选中上下文)
+│   │   ├── storage.rs      # Storage 结构体 (仓库管理、磁盘扫描、隐藏列表)
 │   │   └── error.rs        # 错误类型定义 (thiserror)
 │   └── core/               # 业务命令实现
 │       ├── initlib.rs      # 仓库初始化/注册
@@ -161,10 +174,12 @@ idont-notebook/
 │       ├── selectlib.rs    # 选中仓库上下文
 │       ├── currentlib.rs   # 显示当前仓库
 │       ├── mknote.rs       # 创建笔记
-│       ├── listnote.rs     # 列出笔记
-│       ├── editnote.rs     # 查看/编辑笔记（系统编辑器）
-│       ├── catnote.rs      # 打印笔记内容（head/tail）
+│       ├── listnote.rs     # 列出笔记（磁盘扫描）
+│       ├── editnote.rs     # 系统默认程序打开
+│       ├── catnote.rs      # 打印笔记内容（支持二进制检测）
 │       ├── rmnote.rs       # 删除笔记（含确认提示）
+│       ├── track.rs        # 恢复显示被隐藏的文件
+│       ├── untrack.rs      # 隐藏文件
 │       ├── listlog.rs      # 会话历史
 │       └── help.rs         # 帮助信息
 ```
@@ -178,10 +193,22 @@ idont-notebook/
 
 <仓库路径>/
 ├── .notes/
-│   ├── notes.toml                 # 仓库元数据（版本 + NoteMeta 列表）
-│   └── data/                      # 笔记实际存储目录
+│   ├── notes.toml                 # 仓库元数据 + 隐藏列表
+│   └── data/                      # 笔记实际存储目录（任意类型文件）
 │       ├── daily.md
-│       └── meeting.md
+│       ├── image.png
+│       └── backup.zip
+```
+
+`notes.toml` 结构：
+
+```toml
+[notebook]
+version = 1
+created_at = "2026-05-08T10:00:00+00:00"
+
+[tracking]
+hidden = ["backup.zip"]
 ```
 
 ## 技术栈
