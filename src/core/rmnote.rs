@@ -1,7 +1,4 @@
-
-
 use std::io::{self, Write};
-
 use crate::storage::{StorageError, Storage};
 
 pub fn rmnote(storage: &mut Storage, filename: &str) -> Result<(), StorageError> {
@@ -12,7 +9,6 @@ pub fn rmnote(storage: &mut Storage, filename: &str) -> Result<(), StorageError>
         return Err(StorageError::NoteNotFound(filename.to_string()));
     }
 
-    // 确认提示
     print!("rmnote: 确定删除笔记 {}？[y/N] ", filename);
     io::stdout().flush().map_err(|e| StorageError::Other(format!("刷新输出失败: {}", e)))?;
 
@@ -24,11 +20,8 @@ pub fn rmnote(storage: &mut Storage, filename: &str) -> Result<(), StorageError>
         return Ok(());
     }
 
-    // 删除文件
     std::fs::remove_file(&note_path)?;
-
-    // 从 notes.toml 中移除该条目
-    storage.remove_note_meta(idx, filename)?;
+    storage.remove_from_hidden(idx, filename)?;
 
     println!("rmnote: 已删除笔记 {}", filename);
     Ok(())

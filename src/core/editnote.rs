@@ -9,21 +9,20 @@ pub fn editnote(storage: &Storage, filename: &str) -> Result<(), StorageError> {
         return Err(StorageError::NoteNotFound(filename.to_string()));
     }
 
-    // 尝试使用系统默认编辑器打开
-    let editor = std::env::var("EDITOR")
-        .or_else(|_| std::env::var("VISUAL"))
-        .unwrap_or_else(|_| {
-            // Windows 默认用 notepad，其他平台用 vi
-            if cfg!(windows) { "notepad".to_string() } else { "vi".to_string() }
-        });
+    let status = if cfg!(target_os = "windows") {
+        Command::new("cmd")
+            .args(["/c", "start", "", &note_path.to_string_lossy()])
+            .status()
+    } else if cfg!(target_os = "macos") {
+        Command::new("open")
+            .arg(&note_path)
+            .status()
+    } else {
+        Command::new("xdg-open")
+            .arg(&note_path)
+            .status()
+    };
 
-    let status = Command::new(&editor)
-        .arg(&note_path)
-        .status()
-        .map_err(|e| StorageError::Other(format!("启动编辑器失败: {}", e)))?;
-
-    if !status.success() {
-        return Err(StorageError::Other("编辑器退出异常".to_string()));
-    }
+    status.map_err(|e| StorageError::Other(format!("打开文件失败: {}", e)))?;
     Ok(())
 }
