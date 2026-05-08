@@ -37,14 +37,6 @@ impl Storage {
             ));
         }
 
-        if meta_path.exists() {
-            return Err(StorageError::NoteAlreadyExists(
-                format!("目录 {} 已包含笔记本", path),
-            ));
-        }
-
-        fs::create_dir_all(notes_dir.join(DATA_DIRECTORY))?;
-
         let repo_name = name
             .map(|s| s.to_string())
             .unwrap_or_else(|| {
@@ -54,6 +46,20 @@ impl Storage {
                     .unwrap_or("unnamed")
                     .to_string()
             });
+
+        if meta_path.exists() {
+            // 已有 notes.toml，直接注册
+            let entry = NotebookEntry {
+                name: repo_name,
+                path: notes_dir,
+            };
+            self.notebooks.push(entry);
+            GlobalConfig { notebooks: self.notebooks.clone() }.save()?;
+            return Ok(self.notebooks.len() - 1);
+        }
+
+        // .notes 目录不存在或没有 notes.toml，创建完整的笔记本结构
+        fs::create_dir_all(notes_dir.join(DATA_DIRECTORY))?;
 
         let meta = NotebookMeta {
             notebook: NotebookInfo {
@@ -68,8 +74,8 @@ impl Storage {
         fs::write(&meta_path, content)?;
 
         let entry = NotebookEntry {
-            name: repo_name.clone(),
-            path: notes_dir.clone(),
+            name: repo_name,
+            path: notes_dir,
         };
         self.notebooks.push(entry);
 
@@ -145,6 +151,7 @@ impl Storage {
             return Err(StorageError::NoteAlreadyExists(format!("笔记已存在: {}", filename)));
         }
 
+        fs::create_dir_all(&data_dir)?;
         fs::write(&note_full_path, "")?;
         Ok(note_full_path)
     }

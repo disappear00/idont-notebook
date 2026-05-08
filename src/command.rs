@@ -1,32 +1,20 @@
-/// REPL 命令枚举
 pub enum Command {
-    /// mknote <filename> — 创建笔记（支持 .md / .txt）
     Mknote(String),
-    /// initlib <path> — 初始化笔记本目录
     Initlib(String),
-    /// listlib — 列出所有已注册的仓库
     Listlib,
-    /// selectlib <索引或名称> — 选中一个仓库
     Selectlib(String),
-    /// currentlib — 显示当前选中的仓库
     Currentlib,
-    /// listnote — 列出所有笔记
-    Listnote,
-    /// rmnote <filename> — 删除笔记
+    Listnote { show_all: bool },
     Rmnote(String),
-    /// editnote <filename> — 查看/编辑笔记（用系统编辑器打开）
     Editnote(String),
-    /// catnote <filename> [-n <lines>] [-t <lines>] — 打印笔记内容
     Catnote { filename: String, head: Option<usize>, tail: Option<usize> },
-    /// listlog — 显示本次会话的命令历史
+    Track(String),
+    Untrack(String),
     Listlog,
-    /// help — 显示帮助
     Help,
-    /// exit / quit — 退出 REPL
     Exit,
 }
 
-/// 将用户输入解析为 Command
 pub fn parse(input: &str) -> Result<Command, String> {
     let input = input.trim();
     if input.is_empty() {
@@ -40,7 +28,9 @@ pub fn parse(input: &str) -> Result<Command, String> {
         "mknote" | "mk" => {
             let name = parts.get(1).ok_or("用法: mknote <filename> (别名: mk)")?;
             let name = name.trim();
-            validate_note_filename(name)?;
+            if name.is_empty() {
+                return Err("文件名不能为空".into());
+            }
             Ok(Command::Mknote(name.to_string()))
         }
         "initlib" | "il" => {
@@ -61,7 +51,10 @@ pub fn parse(input: &str) -> Result<Command, String> {
             Ok(Command::Selectlib(selector.to_string()))
         }
         "currentlib" | "cl" => Ok(Command::Currentlib),
-        "listnote" | "ls" => Ok(Command::Listnote),
+        "listnote" | "ls" => {
+            let show_all = parts.get(1).map(|s| *s == "-a").unwrap_or(false);
+            Ok(Command::Listnote { show_all })
+        }
         "rmnote" | "rm" => {
             let name = parts.get(1).ok_or("用法: rmnote <filename> (别名: rm)")?;
             Ok(Command::Rmnote(name.trim().to_string()))
@@ -76,7 +69,6 @@ pub fn parse(input: &str) -> Result<Command, String> {
                 return Err("用法: catnote <filename> [-n <lines>] [-t <lines>] (别名: ca)".into());
             }
             let name = all_parts[1];
-            validate_note_filename(name)?;
             let mut head: Option<usize> = None;
             let mut tail: Option<usize> = None;
             let mut i = 2;
@@ -103,20 +95,25 @@ pub fn parse(input: &str) -> Result<Command, String> {
             }
             Ok(Command::Catnote { filename: name.to_string(), head, tail })
         }
+        "track" => {
+            let name = parts.get(1).ok_or("用法: track <filename>")?;
+            let name = name.trim();
+            if name.is_empty() {
+                return Err("文件名不能为空".into());
+            }
+            Ok(Command::Track(name.to_string()))
+        }
+        "untrack" => {
+            let name = parts.get(1).ok_or("用法: untrack <filename>")?;
+            let name = name.trim();
+            if name.is_empty() {
+                return Err("文件名不能为空".into());
+            }
+            Ok(Command::Untrack(name.to_string()))
+        }
         "listlog" | "log" => Ok(Command::Listlog),
         "help" => Ok(Command::Help),
         "exit" | "quit" => Ok(Command::Exit),
         _ => Err(format!("未知命令: {}，输入 help 查看帮助", cmd)),
     }
-}
-
-/// 校验笔记文件名，仅允许 .md 和 .txt 后缀
-fn validate_note_filename(name: &str) -> Result<(), String> {
-    if name.is_empty() {
-        return Err("文件名不能为空".into());
-    }
-    if !name.ends_with(".md") && !name.ends_with(".txt") {
-        return Err("仅支持 .md 和 .txt 格式的笔记".into());
-    }
-    Ok(())
 }
