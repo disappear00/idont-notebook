@@ -29,14 +29,16 @@ impl IdontCompleter {
                 "sl ",
                 "currentlib",
                 "cl",
-                "listnote",
-                "ls",
+                "listnote ",
+                "ls ",
                 "rmnote ",
                 "rm ",
                 "editnote ",
                 "ed ",
                 "catnote ",
                 "ca ",
+                "track ",
+                "untrack ",
                 "listlog",
                 "log",
                 "help",
@@ -53,12 +55,9 @@ impl IdontCompleter {
         self.notebook_names = storage.list_notebooks().iter()
             .map(|e| e.name.clone())
             .collect();
-        // 使用当前选中的仓库索引来列出笔记
         let idx = storage.current_notebook_index();
-        if let Ok(notes) = storage.list_notes(idx) {
-            self.note_filenames = notes.into_iter()
-                .map(|m| m.filename)
-                .collect();
+        if let Ok(notes) = storage.scan_notes(idx.unwrap_or(0)) {
+            self.note_filenames = notes;
         }
     }
 
@@ -100,19 +99,31 @@ impl Completer for IdontCompleter {
                 let candidates = if IdontCompleter::is_command(cmd, "selectlib", "sl")
                     || IdontCompleter::is_command(cmd, "initlib", "il")
                 {
-                    // 补全仓库名
                     self.notebook_names.iter()
                         .filter(|name| name.starts_with(&arg_input))
                         .cloned()
                         .collect()
                 } else if IdontCompleter::is_command(cmd, "rmnote", "rm")
                     || IdontCompleter::is_command(cmd, "editnote", "ed")
+                    || IdontCompleter::is_command(cmd, "catnote", "ca")
+                    || IdontCompleter::is_command(cmd, "track", "track")
+                    || IdontCompleter::is_command(cmd, "untrack", "untrack")
                 {
-                    // 补全笔记文件名
                     self.note_filenames.iter()
                         .filter(|name| name.starts_with(&arg_input))
                         .cloned()
                         .collect()
+                } else if IdontCompleter::is_command(cmd, "listnote", "ls") {
+                    if arg_input.starts_with('-') {
+                        vec!["-a".to_string()].into_iter()
+                            .filter(|s| s.starts_with(&arg_input))
+                            .collect()
+                    } else {
+                        self.note_filenames.iter()
+                            .filter(|name| name.starts_with(&arg_input))
+                            .cloned()
+                            .collect()
+                    }
                 } else {
                     Vec::new()
                 };
