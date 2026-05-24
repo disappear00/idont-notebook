@@ -1,0 +1,1522 @@
+{
+  "version": "1.0.0",
+  "gitCommitHash": "7f2c8969fb0c120c7be004084cf6b446fc49ddc2",
+  "generatedAt": "2026-05-24T07:19:24.605Z",
+  "files": {
+    "Cargo.toml": {
+      "filePath": "Cargo.toml",
+      "contentHash": "4a8ee8e7e8883e52c3259d9ab64ae4e7d716457366c1b56f86f272959168d850",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 17,
+      "hasStructuralAnalysis": true
+    },
+    "Cargo.lock": {
+      "filePath": "Cargo.lock",
+      "contentHash": "f6cf99aac44625a55c86e2a4c54bf79b412076f077521f72c32326c1f7ba9911",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 732,
+      "hasStructuralAnalysis": false
+    },
+    "package.json": {
+      "filePath": "package.json",
+      "contentHash": "1f3f962059f468194a609516cbd30e0b85cd9b15a899848104514c574b51a8d8",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    ".gitignore": {
+      "filePath": ".gitignore",
+      "contentHash": "6f9e04b3dff576ca99c83311f1b450c48f79585f0f55d58872dd566a86427779",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 4,
+      "hasStructuralAnalysis": false
+    },
+    ".npmignore": {
+      "filePath": ".npmignore",
+      "contentHash": "1687a87fed8f17bb602df4f4fdec5dcc09c84db8f51a957db470959e6889eabe",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 14,
+      "hasStructuralAnalysis": false
+    },
+    ".notes/notes.toml": {
+      "filePath": ".notes/notes.toml",
+      "contentHash": "e310a57be5f8d8b9c743264176319a92e6043e9a16aa098c1a215776d511b2ee",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 8,
+      "hasStructuralAnalysis": true
+    },
+    ".notes/data/test.docx": {
+      "filePath": ".notes/data/test.docx",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": false
+    },
+    ".notes/data/test.txt": {
+      "filePath": ".notes/data/test.txt",
+      "contentHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1,
+      "hasStructuralAnalysis": false
+    },
+    "src/main.rs": {
+      "filePath": "src/main.rs",
+      "contentHash": "c1cd79d7d3986aed51f52fffcc999047143c31ffc7bec78cd07248eaa284bc24",
+      "functions": [
+        {
+          "name": "main",
+          "params": [],
+          "exported": false,
+          "lineCount": 7
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 14,
+      "hasStructuralAnalysis": true
+    },
+    "src/command.rs": {
+      "filePath": "src/command.rs",
+      "contentHash": "331d07440b7ffa258899141890d6ddcdae4aaa8eb2f1207bd2f00289debd3e9e",
+      "functions": [
+        {
+          "name": "parse",
+          "params": [
+            "input"
+          ],
+          "returnType": "Result<Command, String>",
+          "exported": true,
+          "lineCount": 102
+        }
+      ],
+      "classes": [
+        {
+          "name": "Command",
+          "methods": [],
+          "properties": [
+            "Mknote",
+            "Initlib",
+            "Listlib",
+            "Selectlib",
+            "Currentlib",
+            "Listnote",
+            "Rmnote",
+            "Editnote",
+            "Catnote",
+            "Track",
+            "Untrack",
+            "Listlog",
+            "Help",
+            "Exit"
+          ],
+          "exported": true,
+          "lineCount": 16
+        }
+      ],
+      "imports": [],
+      "exports": [
+        "Command",
+        "parse"
+      ],
+      "totalLines": 120,
+      "hasStructuralAnalysis": true
+    },
+    "src/handler.rs": {
+      "filePath": "src/handler.rs",
+      "contentHash": "f86cd42c6cab2a09673feb6a7facfae0953bafc2332c33922b95524671cedb04",
+      "functions": [
+        {
+          "name": "handle_mknote",
+          "params": [
+            "storage",
+            "filename"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "handle_initlib",
+          "params": [
+            "storage",
+            "path"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "handle_listlib",
+          "params": [
+            "storage"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "handle_selectlib",
+          "params": [
+            "storage",
+            "selector"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "handle_currentlib",
+          "params": [
+            "storage"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "handle_listnote",
+          "params": [
+            "storage",
+            "show_all"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "handle_rmnote",
+          "params": [
+            "storage",
+            "filename"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "handle_editnote",
+          "params": [
+            "storage",
+            "filename"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "handle_catnote",
+          "params": [
+            "storage",
+            "filename",
+            "head",
+            "tail"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "handle_track",
+          "params": [
+            "storage",
+            "filename"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "handle_untrack",
+          "params": [
+            "storage",
+            "filename"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "handle_listlog",
+          "params": [
+            "log"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "handle_help",
+          "params": [],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "dispatch",
+          "params": [
+            "storage",
+            "log",
+            "cmd"
+          ],
+          "returnType": "Result<bool, StorageError>",
+          "exported": true,
+          "lineCount": 19
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "crate::command",
+          "specifiers": [
+            "Command"
+          ]
+        },
+        {
+          "source": "crate::core",
+          "specifiers": [
+            "*"
+          ]
+        },
+        {
+          "source": "crate::storage",
+          "specifiers": [
+            "StorageError",
+            "Storage"
+          ]
+        }
+      ],
+      "exports": [
+        "handle_mknote",
+        "handle_initlib",
+        "handle_listlib",
+        "handle_selectlib",
+        "handle_currentlib",
+        "handle_listnote",
+        "handle_rmnote",
+        "handle_editnote",
+        "handle_catnote",
+        "handle_track",
+        "handle_untrack",
+        "handle_listlog",
+        "handle_help",
+        "dispatch"
+      ],
+      "totalLines": 76,
+      "hasStructuralAnalysis": true
+    },
+    "src/repl.rs": {
+      "filePath": "src/repl.rs",
+      "contentHash": "28e5e9d27a259577cc7f083a43b960d7aeda9881de480ce67cf96c0c62443754",
+      "functions": [
+        {
+          "name": "new",
+          "params": [],
+          "returnType": "Self",
+          "exported": false,
+          "lineCount": 33
+        },
+        {
+          "name": "refresh",
+          "params": [
+            "storage"
+          ],
+          "exported": false,
+          "lineCount": 9
+        },
+        {
+          "name": "is_command",
+          "params": [
+            "input",
+            "cmd_name",
+            "alias"
+          ],
+          "returnType": "bool",
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "complete",
+          "params": [
+            "line",
+            "pos",
+            "_ctx"
+          ],
+          "returnType": "rustyline::Result<(usize, Vec<String>)>",
+          "exported": false,
+          "lineCount": 62
+        },
+        {
+          "name": "build_prompt",
+          "params": [
+            "storage"
+          ],
+          "returnType": "String",
+          "exported": false,
+          "lineCount": 12
+        },
+        {
+          "name": "run",
+          "params": [
+            "storage"
+          ],
+          "returnType": "Result<(), Box<dyn std::error::Error>>",
+          "exported": true,
+          "lineCount": 55
+        }
+      ],
+      "classes": [
+        {
+          "name": "IdontCompleter",
+          "methods": [
+            "new",
+            "refresh",
+            "is_command",
+            "complete"
+          ],
+          "properties": [
+            "commands",
+            "notebook_names",
+            "note_filenames"
+          ],
+          "exported": false,
+          "lineCount": 5
+        }
+      ],
+      "imports": [
+        {
+          "source": "rustyline::completion",
+          "specifiers": [
+            "Completer"
+          ]
+        },
+        {
+          "source": "rustyline::highlight",
+          "specifiers": [
+            "Highlighter"
+          ]
+        },
+        {
+          "source": "rustyline::hint",
+          "specifiers": [
+            "Hinter"
+          ]
+        },
+        {
+          "source": "rustyline::validate",
+          "specifiers": [
+            "Validator"
+          ]
+        },
+        {
+          "source": "rustyline",
+          "specifiers": [
+            "Context",
+            "Editor",
+            "Helper"
+          ]
+        },
+        {
+          "source": "crate",
+          "specifiers": [
+            "command"
+          ]
+        },
+        {
+          "source": "crate",
+          "specifiers": [
+            "handler"
+          ]
+        },
+        {
+          "source": "crate::storage",
+          "specifiers": [
+            "Storage"
+          ]
+        }
+      ],
+      "exports": [
+        "run"
+      ],
+      "totalLines": 215,
+      "hasStructuralAnalysis": true
+    },
+    "src/storage/mod.rs": {
+      "filePath": "src/storage/mod.rs",
+      "contentHash": "26a0580f77a999b238f88dd152982445a1aee3c58251ef1830c837ec21317282",
+      "functions": [],
+      "classes": [],
+      "imports": [
+        {
+          "source": "error",
+          "specifiers": [
+            "StorageError"
+          ]
+        },
+        {
+          "source": "storage",
+          "specifiers": [
+            "Storage"
+          ]
+        },
+        {
+          "source": "models",
+          "specifiers": [
+            "NotebookMeta",
+            "NotebookInfo",
+            "NotebookEntry"
+          ]
+        }
+      ],
+      "exports": [],
+      "totalLines": 12,
+      "hasStructuralAnalysis": true
+    },
+    "src/storage/models.rs": {
+      "filePath": "src/storage/models.rs",
+      "contentHash": "6eb1b1e0b1f8ddf20420219d54dc99732cca5c69f9cd5bbf91ae306728dc014a",
+      "functions": [],
+      "classes": [
+        {
+          "name": "NotebookMeta",
+          "methods": [],
+          "properties": [
+            "notebook",
+            "tracking"
+          ],
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "NotebookInfo",
+          "methods": [],
+          "properties": [
+            "version",
+            "created_at"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "TrackingInfo",
+          "methods": [],
+          "properties": [
+            "hidden"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "NotebookEntry",
+          "methods": [],
+          "properties": [
+            "name",
+            "path"
+          ],
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "GlobalConfig",
+          "methods": [],
+          "properties": [
+            "notebooks"
+          ],
+          "exported": true,
+          "lineCount": 3
+        }
+      ],
+      "imports": [
+        {
+          "source": "std::path",
+          "specifiers": [
+            "PathBuf"
+          ]
+        },
+        {
+          "source": "serde",
+          "specifiers": [
+            "Serialize",
+            "Deserialize"
+          ]
+        }
+      ],
+      "exports": [
+        "NotebookMeta",
+        "NotebookInfo",
+        "TrackingInfo",
+        "NotebookEntry",
+        "GlobalConfig"
+      ],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "src/storage/config.rs": {
+      "filePath": "src/storage/config.rs",
+      "contentHash": "af93e97c45df03483b0a70d78c8e658cdb09de22874da04d968772265978bd14",
+      "functions": [
+        {
+          "name": "new",
+          "params": [],
+          "returnType": "Self",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "config_path",
+          "params": [],
+          "returnType": "Option<PathBuf>",
+          "exported": false,
+          "lineCount": 3
+        },
+        {
+          "name": "load",
+          "params": [],
+          "returnType": "Self",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "save",
+          "params": [],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 11
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "std",
+          "specifiers": [
+            "fs"
+          ]
+        },
+        {
+          "source": "std::path",
+          "specifiers": [
+            "PathBuf"
+          ]
+        },
+        {
+          "source": "super::error",
+          "specifiers": [
+            "StorageError"
+          ]
+        },
+        {
+          "source": "super::models",
+          "specifiers": [
+            "GlobalConfig",
+            "GLOBAL_CONFIG_FILENAME"
+          ]
+        }
+      ],
+      "exports": [
+        "new",
+        "load",
+        "save"
+      ],
+      "totalLines": 40,
+      "hasStructuralAnalysis": true
+    },
+    "src/storage/storage.rs": {
+      "filePath": "src/storage/storage.rs",
+      "contentHash": "075f681b56a4083442b59870f770ed088861a6c67f74f0939045390853fb7d18",
+      "functions": [
+        {
+          "name": "new",
+          "params": [],
+          "returnType": "Self",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "init_notebook",
+          "params": [
+            "path",
+            "name"
+          ],
+          "returnType": "Result<usize, StorageError>",
+          "exported": true,
+          "lineCount": 58
+        },
+        {
+          "name": "list_notebooks",
+          "params": [],
+          "returnType": "&[NotebookEntry]",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "get_notebook",
+          "params": [
+            "index"
+          ],
+          "returnType": "Result<&NotebookEntry, StorageError>",
+          "exported": true,
+          "lineCount": 6
+        },
+        {
+          "name": "notebook_count",
+          "params": [],
+          "returnType": "usize",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "select_notebook",
+          "params": [
+            "selector"
+          ],
+          "returnType": "Result<usize, StorageError>",
+          "exported": true,
+          "lineCount": 22
+        },
+        {
+          "name": "current_notebook_index",
+          "params": [],
+          "returnType": "Option<usize>",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "require_current_notebook",
+          "params": [],
+          "returnType": "Result<&NotebookEntry, StorageError>",
+          "exported": true,
+          "lineCount": 5
+        },
+        {
+          "name": "require_current_index",
+          "params": [],
+          "returnType": "Result<usize, StorageError>",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "is_initialized",
+          "params": [],
+          "returnType": "bool",
+          "exported": true,
+          "lineCount": 3
+        },
+        {
+          "name": "create_note",
+          "params": [
+            "notebook_index",
+            "filename"
+          ],
+          "returnType": "Result<PathBuf, StorageError>",
+          "exported": true,
+          "lineCount": 13
+        },
+        {
+          "name": "get_note_path",
+          "params": [
+            "notebook_index",
+            "filename"
+          ],
+          "returnType": "Result<PathBuf, StorageError>",
+          "exported": true,
+          "lineCount": 4
+        },
+        {
+          "name": "scan_notes",
+          "params": [
+            "notebook_index"
+          ],
+          "returnType": "Result<Vec<String>, StorageError>",
+          "exported": true,
+          "lineCount": 22
+        },
+        {
+          "name": "get_hidden_files",
+          "params": [
+            "notebook_index"
+          ],
+          "returnType": "Result<Vec<String>, StorageError>",
+          "exported": true,
+          "lineCount": 14
+        },
+        {
+          "name": "hide_file",
+          "params": [
+            "notebook_index",
+            "filename"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 9
+        },
+        {
+          "name": "unhide_file",
+          "params": [
+            "notebook_index",
+            "filename"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 11
+        },
+        {
+          "name": "remove_from_hidden",
+          "params": [
+            "notebook_index",
+            "filename"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 7
+        },
+        {
+          "name": "with_tracking_mut",
+          "params": [
+            "notebook_index",
+            "op"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": false,
+          "lineCount": 29
+        },
+        {
+          "name": "default",
+          "params": [],
+          "returnType": "Self",
+          "exported": false,
+          "lineCount": 3
+        }
+      ],
+      "classes": [
+        {
+          "name": "Storage",
+          "methods": [
+            "new",
+            "init_notebook",
+            "list_notebooks",
+            "get_notebook",
+            "notebook_count",
+            "select_notebook",
+            "current_notebook_index",
+            "require_current_notebook",
+            "require_current_index",
+            "is_initialized",
+            "create_note",
+            "get_note_path",
+            "scan_notes",
+            "get_hidden_files",
+            "hide_file",
+            "unhide_file",
+            "remove_from_hidden",
+            "with_tracking_mut",
+            "default"
+          ],
+          "properties": [
+            "notebooks",
+            "current_notebook"
+          ],
+          "exported": true,
+          "lineCount": 4
+        }
+      ],
+      "imports": [
+        {
+          "source": "std",
+          "specifiers": [
+            "fs"
+          ]
+        },
+        {
+          "source": "std::path",
+          "specifiers": [
+            "PathBuf"
+          ]
+        },
+        {
+          "source": "chrono",
+          "specifiers": [
+            "Local"
+          ]
+        },
+        {
+          "source": "super::error",
+          "specifiers": [
+            "StorageError"
+          ]
+        },
+        {
+          "source": "super::models",
+          "specifiers": [
+            "NotebookEntry",
+            "NotebookMeta",
+            "NotebookInfo",
+            "TrackingInfo",
+            "NOTEBOOK_VERSION",
+            "META_FILENAME",
+            "META_DIRECTORY",
+            "DATA_DIRECTORY",
+            "GlobalConfig"
+          ]
+        }
+      ],
+      "exports": [
+        "Storage",
+        "new",
+        "init_notebook",
+        "list_notebooks",
+        "get_notebook",
+        "notebook_count",
+        "select_notebook",
+        "current_notebook_index",
+        "require_current_notebook",
+        "require_current_index",
+        "is_initialized",
+        "create_note",
+        "get_note_path",
+        "scan_notes",
+        "get_hidden_files",
+        "hide_file",
+        "unhide_file",
+        "remove_from_hidden"
+      ],
+      "totalLines": 273,
+      "hasStructuralAnalysis": true
+    },
+    "src/storage/error.rs": {
+      "filePath": "src/storage/error.rs",
+      "contentHash": "a4d39aa5890a317a20a2637018005a36241188a8e710a9ff03d4ff25991a5afa",
+      "functions": [],
+      "classes": [
+        {
+          "name": "StorageError",
+          "methods": [],
+          "properties": [
+            "NotInitialized",
+            "NoNotebooksRegistered",
+            "NoNotebookSelected",
+            "InvalidSelection",
+            "NoteNotFound",
+            "NoteAlreadyExists",
+            "Io",
+            "Other"
+          ],
+          "exported": true,
+          "lineCount": 25
+        }
+      ],
+      "imports": [
+        {
+          "source": "thiserror",
+          "specifiers": [
+            "Error"
+          ]
+        }
+      ],
+      "exports": [
+        "StorageError"
+      ],
+      "totalLines": 31,
+      "hasStructuralAnalysis": true
+    },
+    "src/core/mod.rs": {
+      "filePath": "src/core/mod.rs",
+      "contentHash": "b5d8178f4ffd4727f179d571122c293df52a3bc24ee02c1c46edfa29e6a2ebaf",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 14,
+      "hasStructuralAnalysis": true
+    },
+    "src/core/catnote.rs": {
+      "filePath": "src/core/catnote.rs",
+      "contentHash": "a118a9b468bc893c43921d9b04754fcb6681df453a33ff524aca5158ec45b7fd",
+      "functions": [
+        {
+          "name": "catnote",
+          "params": [
+            "storage",
+            "filename",
+            "head",
+            "tail"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 37
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "std",
+          "specifiers": [
+            "fs"
+          ]
+        },
+        {
+          "source": "crate::storage",
+          "specifiers": [
+            "StorageError",
+            "Storage"
+          ]
+        }
+      ],
+      "exports": [
+        "catnote"
+      ],
+      "totalLines": 42,
+      "hasStructuralAnalysis": true
+    },
+    "src/core/currentlib.rs": {
+      "filePath": "src/core/currentlib.rs",
+      "contentHash": "414cb5e68735c74a2d9339530b8d050471f967cf80886bdd39d5dbb1f5b42a13",
+      "functions": [
+        {
+          "name": "currentlib",
+          "params": [
+            "storage"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 6
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "crate::storage",
+          "specifiers": [
+            "StorageError",
+            "Storage"
+          ]
+        }
+      ],
+      "exports": [
+        "currentlib"
+      ],
+      "totalLines": 11,
+      "hasStructuralAnalysis": true
+    },
+    "src/core/editnote.rs": {
+      "filePath": "src/core/editnote.rs",
+      "contentHash": "52529ed2c466fc3244e68c40a600a9c4f186b31bb9122d0880185e170222745e",
+      "functions": [
+        {
+          "name": "is_wsl",
+          "params": [],
+          "returnType": "bool",
+          "exported": false,
+          "lineCount": 8
+        },
+        {
+          "name": "open_file",
+          "params": [
+            "path"
+          ],
+          "returnType": "Result<std::process::ExitStatus, StorageError>",
+          "exported": false,
+          "lineCount": 35
+        },
+        {
+          "name": "editnote",
+          "params": [
+            "storage",
+            "filename"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 11
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "std::process",
+          "specifiers": [
+            "Command"
+          ]
+        },
+        {
+          "source": "std::path",
+          "specifiers": [
+            "Path"
+          ]
+        },
+        {
+          "source": "crate::storage",
+          "specifiers": [
+            "StorageError",
+            "Storage"
+          ]
+        }
+      ],
+      "exports": [
+        "editnote"
+      ],
+      "totalLines": 61,
+      "hasStructuralAnalysis": true
+    },
+    "src/core/help.rs": {
+      "filePath": "src/core/help.rs",
+      "contentHash": "a9915b1efb4c980977ffb2909b078832b64cf1afec6c73166d3eec724eed2b1d",
+      "functions": [
+        {
+          "name": "help",
+          "params": [],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 26
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "crate::storage",
+          "specifiers": [
+            "StorageError"
+          ]
+        }
+      ],
+      "exports": [
+        "help"
+      ],
+      "totalLines": 29,
+      "hasStructuralAnalysis": true
+    },
+    "src/core/initlib.rs": {
+      "filePath": "src/core/initlib.rs",
+      "contentHash": "f90eb6827272569b9c49686c3bed142012d9caafa81cf5762465149816ce0714",
+      "functions": [
+        {
+          "name": "initlib",
+          "params": [
+            "storage",
+            "path",
+            "name"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 6
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "crate::storage",
+          "specifiers": [
+            "StorageError",
+            "Storage"
+          ]
+        }
+      ],
+      "exports": [
+        "initlib"
+      ],
+      "totalLines": 11,
+      "hasStructuralAnalysis": true
+    },
+    "src/core/listlib.rs": {
+      "filePath": "src/core/listlib.rs",
+      "contentHash": "0eabfcd31847edcc6696dd93bcac248af7298aeed98895cfcc6d586e9d651fc0",
+      "functions": [
+        {
+          "name": "listlib",
+          "params": [
+            "storage"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 18
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "crate::storage",
+          "specifiers": [
+            "StorageError",
+            "Storage"
+          ]
+        }
+      ],
+      "exports": [
+        "listlib"
+      ],
+      "totalLines": 23,
+      "hasStructuralAnalysis": true
+    },
+    "src/core/listlog.rs": {
+      "filePath": "src/core/listlog.rs",
+      "contentHash": "3777e0ac8fb601399b8605706a9fb50750368066a58e10e51e279f09acbdedaa",
+      "functions": [
+        {
+          "name": "listlog",
+          "params": [
+            "log"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 11
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "crate::storage",
+          "specifiers": [
+            "StorageError"
+          ]
+        }
+      ],
+      "exports": [
+        "listlog"
+      ],
+      "totalLines": 14,
+      "hasStructuralAnalysis": true
+    },
+    "src/core/listnote.rs": {
+      "filePath": "src/core/listnote.rs",
+      "contentHash": "937fd7fc3ab66bb15099cf21aa8206ce12e5594e9d87df6fa82d4bfad62687ea",
+      "functions": [
+        {
+          "name": "listnote",
+          "params": [
+            "storage",
+            "show_all"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 31
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "crate::storage",
+          "specifiers": [
+            "StorageError",
+            "Storage"
+          ]
+        }
+      ],
+      "exports": [
+        "listnote"
+      ],
+      "totalLines": 34,
+      "hasStructuralAnalysis": true
+    },
+    "src/core/mknote.rs": {
+      "filePath": "src/core/mknote.rs",
+      "contentHash": "633f898a565ddebec02e72b5d796cb1550757362b279d5750fa2246ab3466cfe",
+      "functions": [
+        {
+          "name": "mknote",
+          "params": [
+            "storage",
+            "filename"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 6
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "crate::storage",
+          "specifiers": [
+            "StorageError",
+            "Storage"
+          ]
+        }
+      ],
+      "exports": [
+        "mknote"
+      ],
+      "totalLines": 9,
+      "hasStructuralAnalysis": true
+    },
+    "src/core/rmnote.rs": {
+      "filePath": "src/core/rmnote.rs",
+      "contentHash": "408cf1e3a386a9dbb65e3245fd74a4896cdd8f29b4e2f0f4ec2b2455ff97ad1e",
+      "functions": [
+        {
+          "name": "rmnote",
+          "params": [
+            "storage",
+            "filename"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 25
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "std::io",
+          "specifiers": [
+            "self",
+            "Write"
+          ]
+        },
+        {
+          "source": "crate::storage",
+          "specifiers": [
+            "StorageError",
+            "Storage"
+          ]
+        }
+      ],
+      "exports": [
+        "rmnote"
+      ],
+      "totalLines": 29,
+      "hasStructuralAnalysis": true
+    },
+    "src/core/selectlib.rs": {
+      "filePath": "src/core/selectlib.rs",
+      "contentHash": "21de056a2b5969c4e63df1f6444ad074594bacbc884da13d55d597956ee3b11b",
+      "functions": [
+        {
+          "name": "selectlib",
+          "params": [
+            "storage",
+            "selector"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 6
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "crate::storage",
+          "specifiers": [
+            "StorageError",
+            "Storage"
+          ]
+        }
+      ],
+      "exports": [
+        "selectlib"
+      ],
+      "totalLines": 11,
+      "hasStructuralAnalysis": true
+    },
+    "src/core/track.rs": {
+      "filePath": "src/core/track.rs",
+      "contentHash": "e9f344795de3d86909632c0b136b71d1b415f4ef5d2d60efbd11f370fe71878b",
+      "functions": [
+        {
+          "name": "track",
+          "params": [
+            "storage",
+            "filename"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 6
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "crate::storage",
+          "specifiers": [
+            "StorageError",
+            "Storage"
+          ]
+        }
+      ],
+      "exports": [
+        "track"
+      ],
+      "totalLines": 8,
+      "hasStructuralAnalysis": true
+    },
+    "src/core/untrack.rs": {
+      "filePath": "src/core/untrack.rs",
+      "contentHash": "51ef0c729295f06f4aee9e09f66517b6af34f5cba326bd7cc040169eed26eb87",
+      "functions": [
+        {
+          "name": "untrack",
+          "params": [
+            "storage",
+            "filename"
+          ],
+          "returnType": "Result<(), StorageError>",
+          "exported": true,
+          "lineCount": 12
+        }
+      ],
+      "classes": [],
+      "imports": [
+        {
+          "source": "crate::storage",
+          "specifiers": [
+            "StorageError",
+            "Storage"
+          ]
+        }
+      ],
+      "exports": [
+        "untrack"
+      ],
+      "totalLines": 14,
+      "hasStructuralAnalysis": true
+    },
+    "bin/idontnote.js": {
+      "filePath": "bin/idontnote.js",
+      "contentHash": "d2d48a21f9a2376992bfbf5c0a50a11cd46b8a6b7dcbf8f57e73efd47cf41bdd",
+      "functions": [
+        {
+          "name": "getPlatform",
+          "params": [],
+          "exported": false,
+          "lineCount": 13
+        }
+      ],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 57,
+      "hasStructuralAnalysis": true
+    },
+    "scripts/check-binaries.js": {
+      "filePath": "scripts/check-binaries.js",
+      "contentHash": "a41798156c0c541aec3f07a87f1933263ec53f6aa8cc0dc58dca0ff3053e0cdf",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 22,
+      "hasStructuralAnalysis": true
+    },
+    ".github/workflows/publish.yml": {
+      "filePath": ".github/workflows/publish.yml",
+      "contentHash": "44f92bd114bfc21cddef9b62ce41b3149c214223b1d1ec88089afaef70535858",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 116,
+      "hasStructuralAnalysis": true
+    },
+    "readme.md": {
+      "filePath": "readme.md",
+      "contentHash": "14e012fb8a956096b8e8f29a81b1ab309c5707591655eec53108c0e3938c226f",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 227,
+      "hasStructuralAnalysis": true
+    },
+    "AGENTS.md": {
+      "filePath": "AGENTS.md",
+      "contentHash": "9e087c2333f6cc857c89cb715369d7461300f8e44e83fb828766aae06b08fe55",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 68,
+      "hasStructuralAnalysis": true
+    },
+    ".codebuddy/plans/implement-storage-init_26117cb1.md": {
+      "filePath": ".codebuddy/plans/implement-storage-init_26117cb1.md",
+      "contentHash": "951cc60b552b8a6717d4e71ff05602c53ea6c1aef85a30f6d657962d87a76ccf",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 101,
+      "hasStructuralAnalysis": true
+    },
+    ".codebuddy/plans/mknote-multi-repo_da7b3bf4.md": {
+      "filePath": ".codebuddy/plans/mknote-multi-repo_da7b3bf4.md",
+      "contentHash": "3c2a53a59a68df60293ae1f04d3501fc9cf3c292f9a6e825270f2d4dacb98804",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 137,
+      "hasStructuralAnalysis": true
+    },
+    ".codebuddy/plans/remove-searchnote-renote-merge-catnote-editnote_28f7d6f9.md": {
+      "filePath": ".codebuddy/plans/remove-searchnote-renote-merge-catnote-editnote_28f7d6f9.md",
+      "contentHash": "08f7841c5987168d639bb0b49ab56ba0574f2662ebe79edfc0c25a56b58f9a4b",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 73,
+      "hasStructuralAnalysis": true
+    },
+    ".codebuddy/plans/simplify-commands_da19a332.md": {
+      "filePath": ".codebuddy/plans/simplify-commands_da19a332.md",
+      "contentHash": "86bc68d5ab8b5e6c4ac156a254ffcfca999fa558ceb157db67b820a6d36bfed3",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 84,
+      "hasStructuralAnalysis": true
+    },
+    "docs/superpowers/plans/2026-05-08-usability-improvements.md": {
+      "filePath": "docs/superpowers/plans/2026-05-08-usability-improvements.md",
+      "contentHash": "278fae0c2229501cc7bb8d33babb11b53b45bb2fdad339fde1cf71fca6cbdad5",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 1087,
+      "hasStructuralAnalysis": true
+    },
+    "docs/superpowers/specs/2026-05-07-catnote-design.md": {
+      "filePath": "docs/superpowers/specs/2026-05-07-catnote-design.md",
+      "contentHash": "d4dcf6bb9b71c0918827f68d847ffc602c4584ab94034dd92d560ad83dd2f4f0",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 39,
+      "hasStructuralAnalysis": true
+    },
+    "docs/superpowers/specs/2026-05-08-usability-improvements-design.md": {
+      "filePath": "docs/superpowers/specs/2026-05-08-usability-improvements-design.md",
+      "contentHash": "b15e3667c3367b1cf8ba02aab5feef99c038753ad864b37dc65fc50699cb410a",
+      "functions": [],
+      "classes": [],
+      "imports": [],
+      "exports": [],
+      "totalLines": 141,
+      "hasStructuralAnalysis": true
+    }
+  }
+}

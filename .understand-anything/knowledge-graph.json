@@ -1,0 +1,3581 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "idont-notebook",
+    "languages": [
+      "rust",
+      "javascript",
+      "toml",
+      "markdown",
+      "yaml",
+      "json"
+    ],
+    "frameworks": [],
+    "description": "REPL-based notebook CLI written in Rust. Manages markdown/text notes with TOML metadata across multiple directories.",
+    "analyzedAt": "2026-05-24T07:15:12.365Z",
+    "gitCommitHash": "7f2c8969fb0c120c7be004084cf6b446fc49ddc2"
+  },
+  "nodes": [
+    {
+      "id": "file:src/main.rs",
+      "type": "file",
+      "name": "src/main.rs",
+      "filePath": "src/main.rs",
+      "summary": "Application entry point. Creates a Storage instance, then starts the REPL loop. On fatal error, prints error message and exits.",
+      "tags": [
+        "entry-point",
+        "main",
+        "bootstrap"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/main.rs:main",
+      "type": "function",
+      "name": "main",
+      "filePath": "src/main.rs",
+      "summary": "Entry function: instantiates Storage, invokes repl::run, handles fatal errors with process exit.",
+      "tags": [
+        "entry-point"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/command.rs",
+      "type": "file",
+      "name": "src/command.rs",
+      "filePath": "src/command.rs",
+      "summary": "Defines the Command enum (all REPL commands) and the parse function that tokenizes user input into Command variants. Supports command aliases (mk for mknote, il for initlib, etc.).",
+      "tags": [
+        "command-parsing",
+        "enum",
+        "tokenization"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/command.rs:Command",
+      "type": "class",
+      "name": "Command",
+      "filePath": "src/command.rs",
+      "summary": "Enum representing all valid REPL commands: Mknote, Initlib, Listlib, Selectlib, Currentlib, Listnote, Rmnote, Editnote, Catnote, Track, Untrack, Listlog, Help, Exit.",
+      "tags": [
+        "enum",
+        "command",
+        "variant"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/command.rs:parse",
+      "type": "function",
+      "name": "parse",
+      "filePath": "src/command.rs",
+      "summary": "Parses a trimmed user input string into a Command variant. Handles command aliases (mk, il, sl, cl, ls, rm, ed, ca, log). Validates arguments (filename required, -n/-t mutual exclusion). Returns Err with Chinese error messages on invalid input.",
+      "tags": [
+        "parsing",
+        "validation",
+        "dispatch"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/handler.rs",
+      "type": "file",
+      "name": "src/handler.rs",
+      "filePath": "src/handler.rs",
+      "summary": "Dispatch layer between parsed Commands and core module functions. Each handle_* function wraps a core module call. The dispatch function matches Command variants to the appropriate handler.",
+      "tags": [
+        "dispatch",
+        "handler",
+        "orchestration"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/handler.rs:dispatch",
+      "type": "function",
+      "name": "dispatch",
+      "filePath": "src/handler.rs",
+      "summary": "Takes a Command enum and dispatches it to the appropriate handle_* function. Returns Ok(true) for Command::Exit (signaling REPL to stop), Ok(false) otherwise.",
+      "tags": [
+        "dispatch",
+        "orchestration"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/handler.rs:handle_mknote",
+      "type": "function",
+      "name": "handle_mknote",
+      "filePath": "src/handler.rs",
+      "summary": "Dispatches mknote command to core::mknote::mknote.",
+      "tags": [
+        "handler",
+        "mknote"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/handler.rs:handle_initlib",
+      "type": "function",
+      "name": "handle_initlib",
+      "filePath": "src/handler.rs",
+      "summary": "Dispatches initlib command to core::initlib::initlib with no custom name.",
+      "tags": [
+        "handler",
+        "initlib"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/handler.rs:handle_listlib",
+      "type": "function",
+      "name": "handle_listlib",
+      "filePath": "src/handler.rs",
+      "summary": "Dispatches listlib command to core::listlib::listlib.",
+      "tags": [
+        "handler",
+        "listlib"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/handler.rs:handle_selectlib",
+      "type": "function",
+      "name": "handle_selectlib",
+      "filePath": "src/handler.rs",
+      "summary": "Dispatches selectlib command to core::selectlib::selectlib.",
+      "tags": [
+        "handler",
+        "selectlib"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/handler.rs:handle_currentlib",
+      "type": "function",
+      "name": "handle_currentlib",
+      "filePath": "src/handler.rs",
+      "summary": "Dispatches currentlib command to core::currentlib::currentlib.",
+      "tags": [
+        "handler",
+        "currentlib"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/handler.rs:handle_listnote",
+      "type": "function",
+      "name": "handle_listnote",
+      "filePath": "src/handler.rs",
+      "summary": "Dispatches listnote command to core::listnote::listnote with show_all flag.",
+      "tags": [
+        "handler",
+        "listnote"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/handler.rs:handle_rmnote",
+      "type": "function",
+      "name": "handle_rmnote",
+      "filePath": "src/handler.rs",
+      "summary": "Dispatches rmnote command to core::rmnote::rmnote.",
+      "tags": [
+        "handler",
+        "rmnote"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/handler.rs:handle_editnote",
+      "type": "function",
+      "name": "handle_editnote",
+      "filePath": "src/handler.rs",
+      "summary": "Dispatches editnote command to core::editnote::editnote.",
+      "tags": [
+        "handler",
+        "editnote"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/handler.rs:handle_catnote",
+      "type": "function",
+      "name": "handle_catnote",
+      "filePath": "src/handler.rs",
+      "summary": "Dispatches catnote command to core::catnote::catnote with optional head/tail line limits.",
+      "tags": [
+        "handler",
+        "catnote"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/handler.rs:handle_track",
+      "type": "function",
+      "name": "handle_track",
+      "filePath": "src/handler.rs",
+      "summary": "Dispatches track command to core::track::track.",
+      "tags": [
+        "handler",
+        "track"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/handler.rs:handle_untrack",
+      "type": "function",
+      "name": "handle_untrack",
+      "filePath": "src/handler.rs",
+      "summary": "Dispatches untrack command to core::untrack::untrack.",
+      "tags": [
+        "handler",
+        "untrack"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/handler.rs:handle_listlog",
+      "type": "function",
+      "name": "handle_listlog",
+      "filePath": "src/handler.rs",
+      "summary": "Dispatches listlog command to core::listlog::listlog with the session log.",
+      "tags": [
+        "handler",
+        "listlog"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/handler.rs:handle_help",
+      "type": "function",
+      "name": "handle_help",
+      "filePath": "src/handler.rs",
+      "summary": "Dispatches help command to core::help::help.",
+      "tags": [
+        "handler",
+        "help"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/repl.rs",
+      "type": "file",
+      "name": "src/repl.rs",
+      "filePath": "src/repl.rs",
+      "summary": "Interactive REPL loop using rustyline with tab completion. Contains IdontCompleter for context-aware command and parameter completion, dynamic prompt showing current notebook, and the main run loop.",
+      "tags": [
+        "repl",
+        "rustyline",
+        "completion",
+        "interactive"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/repl.rs:IdontCompleter",
+      "type": "class",
+      "name": "IdontCompleter",
+      "filePath": "src/repl.rs",
+      "summary": "Context-aware tab completer implementing rustyline's Completer, Hinter, Highlighter, Validator, and Helper traits. Maintains command list, notebook names, and note filenames for parameter completion. Refreshes from Storage on each prompt.",
+      "tags": [
+        "completion",
+        "rustyline",
+        "helper"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/repl.rs:IdontCompleter::new",
+      "type": "function",
+      "name": "IdontCompleter::new",
+      "filePath": "src/repl.rs",
+      "summary": "Constructor for IdontCompleter. Initializes with a hardcoded list of command strings and empty notebook/note filename caches.",
+      "tags": [
+        "constructor",
+        "completion"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/repl.rs:IdontCompleter::refresh",
+      "type": "function",
+      "name": "IdontCompleter::refresh",
+      "filePath": "src/repl.rs",
+      "summary": "Refreshes notebook_name and note_filenames caches from the Storage instance.",
+      "tags": [
+        "completion",
+        "refresh"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/repl.rs:IdontCompleter::is_command",
+      "type": "function",
+      "name": "IdontCompleter::is_command",
+      "filePath": "src/repl.rs",
+      "summary": "Helper to match input against a command name or its alias.",
+      "tags": [
+        "completion",
+        "helper"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/repl.rs:IdontCompleter::complete",
+      "type": "function",
+      "name": "IdontCompleter::complete",
+      "filePath": "src/repl.rs",
+      "summary": "Rustyline Completer implementation. On single-word input, completes command names. On multi-word input, provides context-aware parameter completion: notebook names for selectlib/initlib, note filenames for rmnote/editnote/catnote/track/untrack, -a flag for listnote.",
+      "tags": [
+        "completion",
+        "tab",
+        "context-aware"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/repl.rs:build_prompt",
+      "type": "function",
+      "name": "build_prompt",
+      "filePath": "src/repl.rs",
+      "summary": "Builds the dynamic REPL prompt string. Shows idont(<notebook_name>)> when a notebook is selected, otherwise idontnote>.",
+      "tags": [
+        "prompt",
+        "display"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/repl.rs:run",
+      "type": "function",
+      "name": "run",
+      "filePath": "src/repl.rs",
+      "summary": "Main REPL loop. Initializes rustyline Editor with IdontCompleter, prints welcome message, then loops reading input, parsing via command::parse, dispatching via handler::dispatch, maintaining a session command log. Handles Ctrl+C and Ctrl+D gracefully.",
+      "tags": [
+        "repl",
+        "loop",
+        "entry-point"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/storage/mod.rs",
+      "type": "file",
+      "name": "src/storage/mod.rs",
+      "filePath": "src/storage/mod.rs",
+      "summary": "Storage module root. Declares submodules (config, error, models, storage) and re-exports Storage and StorageError as the public API. Also re-exports NotebookMeta, NotebookInfo, NotebookEntry for core module use.",
+      "tags": [
+        "module",
+        "re-export",
+        "public-api"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/storage/models.rs",
+      "type": "file",
+      "name": "src/storage/models.rs",
+      "filePath": "src/storage/models.rs",
+      "summary": "Data models and constants for the notebook system. Defines NotebookMeta (with notebook info and tracking), NotebookInfo (version, created_at), TrackingInfo (hidden files list), NotebookEntry (name, path), GlobalConfig (list of registered notebooks), and file path constants.",
+      "tags": [
+        "models",
+        "structs",
+        "serialization",
+        "constants"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/storage/models.rs:NotebookMeta",
+      "type": "class",
+      "name": "NotebookMeta",
+      "filePath": "src/storage/models.rs",
+      "summary": "Top-level metadata struct for a notebook. Contains NotebookInfo and TrackingInfo. Serialized to notes.toml.",
+      "tags": [
+        "struct",
+        "metadata",
+        "serialization"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/storage/models.rs:NotebookInfo",
+      "type": "class",
+      "name": "NotebookInfo",
+      "filePath": "src/storage/models.rs",
+      "summary": "Basic notebook info: version number and creation timestamp (RFC 3339).",
+      "tags": [
+        "struct",
+        "info",
+        "version"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/storage/models.rs:TrackingInfo",
+      "type": "class",
+      "name": "TrackingInfo",
+      "filePath": "src/storage/models.rs",
+      "summary": "Tracks which files are hidden (untracked). Contains a list of hidden filenames.",
+      "tags": [
+        "struct",
+        "tracking",
+        "hidden-files"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/storage/models.rs:NotebookEntry",
+      "type": "class",
+      "name": "NotebookEntry",
+      "filePath": "src/storage/models.rs",
+      "summary": "Represents a registered notebook with a human-readable name and filesystem path to its .notes directory.",
+      "tags": [
+        "struct",
+        "registry",
+        "entry"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "class:src/storage/models.rs:GlobalConfig",
+      "type": "class",
+      "name": "GlobalConfig",
+      "filePath": "src/storage/models.rs",
+      "summary": "Global configuration containing the list of all registered NotebookEntry items. Serialized to ~/.idont/idont-notebook-config.toml.",
+      "tags": [
+        "struct",
+        "config",
+        "persistence"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/storage/config.rs",
+      "type": "file",
+      "name": "src/storage/config.rs",
+      "filePath": "src/storage/config.rs",
+      "summary": "GlobalConfig persistence logic. Implements load (from ~/.idont/idont-notebook-config.toml) and save methods with TOML serialization. Handles missing config gracefully with defaults.",
+      "tags": [
+        "config",
+        "persistence",
+        "toml",
+        "serialization"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/storage/config.rs:GlobalConfig::new",
+      "type": "function",
+      "name": "GlobalConfig::new",
+      "filePath": "src/storage/config.rs",
+      "summary": "Creates a new GlobalConfig with an empty notebooks list.",
+      "tags": [
+        "constructor",
+        "config"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/storage/config.rs:GlobalConfig::config_path",
+      "type": "function",
+      "name": "GlobalConfig::config_path",
+      "filePath": "src/storage/config.rs",
+      "summary": "Returns the path to the global config file: ~/.idont/idont-notebook-config.toml.",
+      "tags": [
+        "config",
+        "path",
+        "home-directory"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/storage/config.rs:GlobalConfig::load",
+      "type": "function",
+      "name": "GlobalConfig::load",
+      "filePath": "src/storage/config.rs",
+      "summary": "Loads GlobalConfig from the config file if it exists, otherwise returns a new default. Parses TOML, falling back to default on parse failure.",
+      "tags": [
+        "load",
+        "config",
+        "persistence"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/storage/config.rs:GlobalConfig::save",
+      "type": "function",
+      "name": "GlobalConfig::save",
+      "filePath": "src/storage/config.rs",
+      "summary": "Serializes GlobalConfig to TOML and writes it to the config file path. Creates parent directories if needed.",
+      "tags": [
+        "save",
+        "config",
+        "persistence"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/storage/storage.rs",
+      "type": "file",
+      "name": "src/storage/storage.rs",
+      "filePath": "src/storage/storage.rs",
+      "summary": "Core Storage struct managing notebook registry, notebook selection state, note CRUD operations, file scanning, and tracking (hide/unhide). The central data access layer for the application.",
+      "tags": [
+        "storage",
+        "core-logic",
+        "notebook",
+        "notes",
+        "tracking"
+      ],
+      "language": "rust",
+      "complexity": "complex"
+    },
+    {
+      "id": "class:src/storage/storage.rs:Storage",
+      "type": "class",
+      "name": "Storage",
+      "filePath": "src/storage/storage.rs",
+      "summary": "Central struct holding all notebook entries and the currently selected notebook index. Provides methods for notebook lifecycle (init, list, select), note creation/scanning/deletion, and file tracking (hide/unhide). Loads GlobalConfig on construction.",
+      "tags": [
+        "struct",
+        "storage",
+        "state"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/storage/storage.rs:Storage::new",
+      "type": "function",
+      "name": "Storage::new",
+      "filePath": "src/storage/storage.rs",
+      "summary": "Constructs Storage by loading GlobalConfig and initializing with no notebook selected.",
+      "tags": [
+        "constructor",
+        "storage"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/storage/storage.rs:Storage::init_notebook",
+      "type": "function",
+      "name": "Storage::init_notebook",
+      "filePath": "src/storage/storage.rs",
+      "summary": "Initializes or registers a notebook. Canonicalizes the path, creates .notes/data/ directory and notes.toml with metadata if they don't exist, adds to the notebook list, and saves GlobalConfig.",
+      "tags": [
+        "notebook",
+        "init",
+        "registration"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/storage/storage.rs:Storage::list_notebooks",
+      "type": "function",
+      "name": "Storage::list_notebooks",
+      "filePath": "src/storage/storage.rs",
+      "summary": "Returns a reference to the list of all registered notebooks.",
+      "tags": [
+        "notebook",
+        "list"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/storage/storage.rs:Storage::get_notebook",
+      "type": "function",
+      "name": "Storage::get_notebook",
+      "filePath": "src/storage/storage.rs",
+      "summary": "Returns a reference to a notebook entry by index, with bounds checking.",
+      "tags": [
+        "notebook",
+        "access"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/storage/storage.rs:Storage::notebook_count",
+      "type": "function",
+      "name": "Storage::notebook_count",
+      "filePath": "src/storage/storage.rs",
+      "summary": "Returns the total number of registered notebooks.",
+      "tags": [
+        "notebook",
+        "count"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/storage/storage.rs:Storage::select_notebook",
+      "type": "function",
+      "name": "Storage::select_notebook",
+      "filePath": "src/storage/storage.rs",
+      "summary": "Selects the current notebook by numeric index or name string, with validation.",
+      "tags": [
+        "notebook",
+        "selection"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/storage/storage.rs:Storage::current_notebook_index",
+      "type": "function",
+      "name": "Storage::current_notebook_index",
+      "filePath": "src/storage/storage.rs",
+      "summary": "Returns the index of the currently selected notebook, if any.",
+      "tags": [
+        "notebook",
+        "selection"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/storage/storage.rs:Storage::require_current_notebook",
+      "type": "function",
+      "name": "Storage::require_current_notebook",
+      "filePath": "src/storage/storage.rs",
+      "summary": "Returns a reference to the current notebook entry, or NoNotebookSelected error if none is selected.",
+      "tags": [
+        "notebook",
+        "validation"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/storage/storage.rs:Storage::require_current_index",
+      "type": "function",
+      "name": "Storage::require_current_index",
+      "filePath": "src/storage/storage.rs",
+      "summary": "Returns the current notebook index, or NoNotebookSelected error if none is selected.",
+      "tags": [
+        "notebook",
+        "validation"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/storage/storage.rs:Storage::is_initialized",
+      "type": "function",
+      "name": "Storage::is_initialized",
+      "filePath": "src/storage/storage.rs",
+      "summary": "Returns true if at least one notebook is registered.",
+      "tags": [
+        "notebook",
+        "check"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/storage/storage.rs:Storage::create_note",
+      "type": "function",
+      "name": "Storage::create_note",
+      "filePath": "src/storage/storage.rs",
+      "summary": "Creates a new empty note file in the .notes/data/ directory. Returns error if the note already exists.",
+      "tags": [
+        "note",
+        "create"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/storage/storage.rs:Storage::get_note_path",
+      "type": "function",
+      "name": "Storage::get_note_path",
+      "filePath": "src/storage/storage.rs",
+      "summary": "Returns the full filesystem path for a note filename within the specified notebook's data directory.",
+      "tags": [
+        "note",
+        "path"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/storage/storage.rs:Storage::scan_notes",
+      "type": "function",
+      "name": "Storage::scan_notes",
+      "filePath": "src/storage/storage.rs",
+      "summary": "Scans the .notes/data/ directory and returns all filenames sorted by modification time (newest first).",
+      "tags": [
+        "note",
+        "scan",
+        "list"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/storage/storage.rs:Storage::get_hidden_files",
+      "type": "function",
+      "name": "Storage::get_hidden_files",
+      "filePath": "src/storage/storage.rs",
+      "summary": "Reads notes.toml and returns the list of hidden (untracked) filenames.",
+      "tags": [
+        "tracking",
+        "hidden"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/storage/storage.rs:Storage::hide_file",
+      "type": "function",
+      "name": "Storage::hide_file",
+      "filePath": "src/storage/storage.rs",
+      "summary": "Adds a filename to the hidden tracking list (untrack). Returns error if already hidden.",
+      "tags": [
+        "tracking",
+        "hide"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/storage/storage.rs:Storage::unhide_file",
+      "type": "function",
+      "name": "Storage::unhide_file",
+      "filePath": "src/storage/storage.rs",
+      "summary": "Removes a filename from the hidden tracking list (track). Returns error if file was not hidden.",
+      "tags": [
+        "tracking",
+        "unhide"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/storage/storage.rs:Storage::remove_from_hidden",
+      "type": "function",
+      "name": "Storage::remove_from_hidden",
+      "filePath": "src/storage/storage.rs",
+      "summary": "Removes a filename from the hidden tracking list without error if it was not present. Used during note deletion cleanup.",
+      "tags": [
+        "tracking",
+        "cleanup"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/storage/storage.rs:Storage::with_tracking_mut",
+      "type": "function",
+      "name": "Storage::with_tracking_mut",
+      "filePath": "src/storage/storage.rs",
+      "summary": "Helper that reads notes.toml, applies a mutation closure to TrackingInfo, then writes the updated notes.toml back. Used by hide_file, unhide_file, and remove_from_hidden.",
+      "tags": [
+        "tracking",
+        "helper",
+        "read-modify-write"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/storage/storage.rs:Storage::default",
+      "type": "function",
+      "name": "Storage::default",
+      "filePath": "src/storage/storage.rs",
+      "summary": "Default implementation delegates to Storage::new.",
+      "tags": [
+        "default",
+        "constructor"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/storage/error.rs",
+      "type": "file",
+      "name": "src/storage/error.rs",
+      "filePath": "src/storage/error.rs",
+      "summary": "Defines the StorageError enum using thiserror for automatic Display and Error trait derivation. Covers uninitialized, not registered, not selected, invalid selection, note not found, note already exists, IO errors, and general other errors.",
+      "tags": [
+        "error",
+        "thiserror",
+        "enum"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "class:src/storage/error.rs:StorageError",
+      "type": "class",
+      "name": "StorageError",
+      "filePath": "src/storage/error.rs",
+      "summary": "Error enum for all storage-layer errors. Variants: NotInitialized, NoNotebooksRegistered, NoNotebookSelected, InvalidSelection, NoteNotFound, NoteAlreadyExists, Io (from std::io::Error), Other (generic string). All messages in Chinese.",
+      "tags": [
+        "error",
+        "enum",
+        "thiserror"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/core/mod.rs",
+      "type": "file",
+      "name": "src/core/mod.rs",
+      "filePath": "src/core/mod.rs",
+      "summary": "Core module root declaring all command handler submodules: catnote, currentlib, editnote, help, initlib, listlib, listlog, listnote, mknote, rmnote, selectlib, track, untrack.",
+      "tags": [
+        "module",
+        "re-export",
+        "public-api"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "file:src/core/catnote.rs",
+      "type": "file",
+      "name": "src/core/catnote.rs",
+      "filePath": "src/core/catnote.rs",
+      "summary": "Implements the catnote command: prints the content of a note to stdout. Supports -n (first N lines) and -t (last N lines) options. Handles binary files gracefully.",
+      "tags": [
+        "catnote",
+        "view",
+        "note-content"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/core/catnote.rs:catnote",
+      "type": "function",
+      "name": "catnote",
+      "filePath": "src/core/catnote.rs",
+      "summary": "Reads a note file and prints its content. Supports head (first N lines) via -n, tail (last N lines) via -t, or full content. Detects binary files and prints a message instead of garbled output.",
+      "tags": [
+        "catnote",
+        "view",
+        "read"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/core/currentlib.rs",
+      "type": "file",
+      "name": "src/core/currentlib.rs",
+      "filePath": "src/core/currentlib.rs",
+      "summary": "Implements the currentlib command: displays the currently selected notebook's name, index, and path.",
+      "tags": [
+        "currentlib",
+        "notebook-status"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/core/currentlib.rs:currentlib",
+      "type": "function",
+      "name": "currentlib",
+      "filePath": "src/core/currentlib.rs",
+      "summary": "Displays info about the currently selected notebook (name, index, path). Requires a notebook to be selected.",
+      "tags": [
+        "currentlib",
+        "display"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/core/editnote.rs",
+      "type": "file",
+      "name": "src/core/editnote.rs",
+      "filePath": "src/core/editnote.rs",
+      "summary": "Implements the editnote command: opens a note file with the system default program. Handles cross-platform file opening (Windows cmd /c start, macOS open, Linux xdg-open, WSL wslview/explorer.exe).",
+      "tags": [
+        "editnote",
+        "open",
+        "cross-platform",
+        "platform-detection"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/core/editnote.rs:editnote",
+      "type": "function",
+      "name": "editnote",
+      "filePath": "src/core/editnote.rs",
+      "summary": "Opens a note file with the system default application. Requires the note to exist and a notebook to be selected.",
+      "tags": [
+        "editnote",
+        "open"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/core/editnote.rs:open_file",
+      "type": "function",
+      "name": "open_file",
+      "filePath": "src/core/editnote.rs",
+      "summary": "Cross-platform file opener. Uses cmd /c start on Windows, open on macOS, wslview or explorer.exe on WSL, xdg-open on Linux.",
+      "tags": [
+        "open",
+        "cross-platform",
+        "system"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "function:src/core/editnote.rs:is_wsl",
+      "type": "function",
+      "name": "is_wsl",
+      "filePath": "src/core/editnote.rs",
+      "summary": "Detects if running inside WSL by checking WSL_DISTRO_NAME env var or /proc/version for Microsoft/WSL markers.",
+      "tags": [
+        "wsl",
+        "detection",
+        "platform"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/core/help.rs",
+      "type": "file",
+      "name": "src/core/help.rs",
+      "filePath": "src/core/help.rs",
+      "summary": "Implements the help command: prints the full command reference with categories (repository management, note operations, track management, other) and aliases.",
+      "tags": [
+        "help",
+        "documentation",
+        "reference"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/core/help.rs:help",
+      "type": "function",
+      "name": "help",
+      "filePath": "src/core/help.rs",
+      "summary": "Prints the full command reference to stdout, organized by category with Chinese descriptions and aliases.",
+      "tags": [
+        "help",
+        "display"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/core/initlib.rs",
+      "type": "file",
+      "name": "src/core/initlib.rs",
+      "filePath": "src/core/initlib.rs",
+      "summary": "Implements the initlib command: initializes or registers a notebook directory. Creates .notes/data/ structure and notes.toml if needed.",
+      "tags": [
+        "initlib",
+        "notebook",
+        "initialization"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/core/initlib.rs:initlib",
+      "type": "function",
+      "name": "initlib",
+      "filePath": "src/core/initlib.rs",
+      "summary": "Initializes/registers a notebook at the given path. Delegates to Storage::init_notebook and prints the result.",
+      "tags": [
+        "initlib",
+        "initialization"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/core/listlib.rs",
+      "type": "file",
+      "name": "src/core/listlib.rs",
+      "filePath": "src/core/listlib.rs",
+      "summary": "Implements the listlib command: lists all registered notebooks with index, name, and path. Marks the currently selected notebook with an asterisk.",
+      "tags": [
+        "listlib",
+        "notebook-listing"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/core/listlib.rs:listlib",
+      "type": "function",
+      "name": "listlib",
+      "filePath": "src/core/listlib.rs",
+      "summary": "Prints all registered notebooks with their index, name, and path. Marks the currently selected notebook with '*'.",
+      "tags": [
+        "listlib",
+        "display"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/core/listlog.rs",
+      "type": "file",
+      "name": "src/core/listlog.rs",
+      "filePath": "src/core/listlog.rs",
+      "summary": "Implements the listlog command: displays the session's command history (all commands entered during the current REPL session).",
+      "tags": [
+        "listlog",
+        "history",
+        "session"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/core/listlog.rs:listlog",
+      "type": "function",
+      "name": "listlog",
+      "filePath": "src/core/listlog.rs",
+      "summary": "Prints the session command history with numbered entries, or a message if the log is empty.",
+      "tags": [
+        "listlog",
+        "history",
+        "display"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/core/listnote.rs",
+      "type": "file",
+      "name": "src/core/listnote.rs",
+      "filePath": "src/core/listnote.rs",
+      "summary": "Implements the listnote command: lists notes in the current notebook. Default mode shows only visible (non-hidden) notes. With -a flag, shows all notes with hidden status markers.",
+      "tags": [
+        "listnote",
+        "note-listing",
+        "filtering"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/core/listnote.rs:listnote",
+      "type": "function",
+      "name": "listnote",
+      "filePath": "src/core/listnote.rs",
+      "summary": "Lists notes in the current notebook. Without -a, shows only non-hidden notes. With -a, shows all notes marking hidden ones with [已隐藏].",
+      "tags": [
+        "listnote",
+        "display",
+        "filtering"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/core/mknote.rs",
+      "type": "file",
+      "name": "src/core/mknote.rs",
+      "filePath": "src/core/mknote.rs",
+      "summary": "Implements the mknote command: creates a new empty note file in the current notebook's .notes/data/ directory.",
+      "tags": [
+        "mknote",
+        "create",
+        "note"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/core/mknote.rs:mknote",
+      "type": "function",
+      "name": "mknote",
+      "filePath": "src/core/mknote.rs",
+      "summary": "Creates a new empty note in the current notebook and prints the created file path.",
+      "tags": [
+        "mknote",
+        "create"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/core/rmnote.rs",
+      "type": "file",
+      "name": "src/core/rmnote.rs",
+      "filePath": "src/core/rmnote.rs",
+      "summary": "Implements the rmnote command: deletes a note with interactive confirmation (y/N prompt). Also removes the note from the hidden tracking list.",
+      "tags": [
+        "rmnote",
+        "delete",
+        "confirmation"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/core/rmnote.rs:rmnote",
+      "type": "function",
+      "name": "rmnote",
+      "filePath": "src/core/rmnote.rs",
+      "summary": "Prompts for confirmation then deletes a note file and cleans up its tracking entry. Cancels on non-y response.",
+      "tags": [
+        "rmnote",
+        "delete",
+        "confirmation"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/core/selectlib.rs",
+      "type": "file",
+      "name": "src/core/selectlib.rs",
+      "filePath": "src/core/selectlib.rs",
+      "summary": "Implements the selectlib command: selects a notebook as the current working context by numeric index or name.",
+      "tags": [
+        "selectlib",
+        "selection",
+        "context"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/core/selectlib.rs:selectlib",
+      "type": "function",
+      "name": "selectlib",
+      "filePath": "src/core/selectlib.rs",
+      "summary": "Selects a notebook by index or name and prints the selected notebook's details.",
+      "tags": [
+        "selectlib",
+        "selection"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/core/track.rs",
+      "type": "file",
+      "name": "src/core/track.rs",
+      "filePath": "src/core/track.rs",
+      "summary": "Implements the track command: restores a previously hidden (untracked) file back to visibility in note listings.",
+      "tags": [
+        "track",
+        "unhide",
+        "tracking"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/core/track.rs:track",
+      "type": "function",
+      "name": "track",
+      "filePath": "src/core/track.rs",
+      "summary": "Makes a hidden file visible again (undoes untrack). Requires a notebook to be selected.",
+      "tags": [
+        "track",
+        "unhide"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/core/untrack.rs",
+      "type": "file",
+      "name": "src/core/untrack.rs",
+      "filePath": "src/core/untrack.rs",
+      "summary": "Implements the untrack command: hides a file from default note listings without deleting it from disk.",
+      "tags": [
+        "untrack",
+        "hide",
+        "tracking"
+      ],
+      "language": "rust",
+      "complexity": "simple"
+    },
+    {
+      "id": "function:src/core/untrack.rs:untrack",
+      "type": "function",
+      "name": "untrack",
+      "filePath": "src/core/untrack.rs",
+      "summary": "Hides a note file from default listings (without deleting it). Requires the note to exist and a notebook to be selected.",
+      "tags": [
+        "untrack",
+        "hide"
+      ],
+      "language": "rust",
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:Cargo.toml",
+      "type": "config",
+      "name": "Cargo.toml",
+      "filePath": "Cargo.toml",
+      "summary": "Rust package manifest for the idont-notebook crate (v0.1.3, edition 2024). Defines binary 'idontnote' at src/main.rs. Dependencies: rustyline 15, serde 1 with derive, toml 0.8, thiserror 2, chrono 0.4, dirs 6.",
+      "tags": [
+        "rust",
+        "package-manifest",
+        "dependencies"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:Cargo.lock",
+      "type": "config",
+      "name": "Cargo.lock",
+      "filePath": "Cargo.lock",
+      "summary": "Auto-generated Cargo dependency lock file (version 4 format). Locks transitive dependency graph for reproducible builds. Contains ~100+ crates including chrono, rustyline, serde, toml, thiserror, dirs, nix, libc, windows-sys, and their transitive deps.",
+      "tags": [
+        "rust",
+        "lockfile",
+        "dependencies",
+        "reproducible-build"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:package.json",
+      "type": "config",
+      "name": "package.json",
+      "filePath": "package.json",
+      "summary": "npm package config for idont-notebook (v0.1.3). Entry point: bin/idontnote.js. Publishes bin/, README.md, LICENSE. Requires Node >=14. prepublishOnly runs scripts/check-binaries.js to validate platform binaries. Repository: github.com/disappear00/idont-notebook.",
+      "tags": [
+        "npm",
+        "package-manifest",
+        "distribution"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:.gitignore",
+      "type": "config",
+      "name": ".gitignore",
+      "filePath": ".gitignore",
+      "summary": "Git ignore patterns excluding /target (build artifacts), /.codebuddy (AI assistant plans), /.notes (test notebook data), and /docs (superpowers docs) from version control.",
+      "tags": [
+        "git",
+        "ignore-patterns"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:.npmignore",
+      "type": "config",
+      "name": ".npmignore",
+      "filePath": ".npmignore",
+      "summary": "npm publish ignore patterns excluding src/, target/, Cargo.lock, Cargo.toml, most markdown files, .github/, tests/, examples/, and scripts/ from the published npm package. Only bin/ and README.md are included.",
+      "tags": [
+        "npm",
+        "ignore-patterns",
+        "distribution"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:.notes/notes.toml",
+      "type": "config",
+      "name": ".notes/notes.toml",
+      "filePath": ".notes/notes.toml",
+      "summary": "Test notebook metadata file. Contains notebook version 1, creation timestamp (2026-04-30), and one note entry 'readme.md'. Used to test the notebook initialization and scanning mechanics.",
+      "tags": [
+        "test-data",
+        "notebook-metadata",
+        "toml"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:.notes/data/test.docx",
+      "type": "config",
+      "name": "test.docx",
+      "filePath": ".notes/data/test.docx",
+      "summary": "Empty test file (.docx) used to validate support for arbitrary file types in the notebook data directory.",
+      "tags": [
+        "test-data",
+        "binary",
+        "docx"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:.notes/data/test.txt",
+      "type": "config",
+      "name": "test.txt",
+      "filePath": ".notes/data/test.txt",
+      "summary": "Empty test text file (.txt) used to validate file handling in the notebook data directory.",
+      "tags": [
+        "test-data",
+        "text"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:bin/idontnote.js",
+      "type": "file",
+      "name": "idontnote.js",
+      "filePath": "bin/idontnote.js",
+      "summary": "Node.js wrapper that detects the platform (win32/darwin/linux × x64/arm64), locates the corresponding prebuilt Rust binary (idontnote-<target>[.exe]), sets executable permissions on Unix, and spawns it via child_process.spawnSync with stdio inherit. Maps 6 platform-target combinations.",
+      "tags": [
+        "javascript",
+        "nodejs",
+        "wrapper",
+        "binary-launcher",
+        "cross-platform"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:scripts/check-binaries.js",
+      "type": "file",
+      "name": "check-binaries.js",
+      "filePath": "scripts/check-binaries.js",
+      "summary": "Pre-publish validation script that reads bin entries from package.json and verifies all declared binary files exist on disk. Exits with error code 1 if any are missing. Used as prepublishOnly hook.",
+      "tags": [
+        "javascript",
+        "nodejs",
+        "validation",
+        "pre-publish",
+        "ci"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "pipeline:.github/workflows/publish.yml",
+      "type": "pipeline",
+      "name": "publish.yml",
+      "filePath": ".github/workflows/publish.yml",
+      "summary": "GitHub Actions CI/CD pipeline triggered on v* tag pushes. Build job (matrix of 6 targets: linux x64/arm64, macOS x64/arm64, windows x64/arm64) cross-compiles Rust binary via cargo build --release. Publish job collects all platform binaries via artifacts, sets package.json version from tag, and publishes to npm with provenance via npm publish --access public.",
+      "tags": [
+        "github-actions",
+        "ci-cd",
+        "cross-compilation",
+        "npm-publish",
+        "release"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:readme.md",
+      "type": "document",
+      "name": "readme.md",
+      "filePath": "readme.md",
+      "summary": "Project README in Chinese. Covers: feature overview (multi-repo mgmt, arbitrary file types, disk scanning, file hiding, REPL, system default opener, TOML metadata, cross-session persistence, safe deletion), command reference table (13 commands), installation (npm, cargo, local build), usage guide with examples, project structure tree, storage mechanism diagram, tech stack table. MIT license.",
+      "tags": [
+        "chinese",
+        "documentation",
+        "readme",
+        "user-guide",
+        "commands"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:AGENTS.md",
+      "type": "document",
+      "name": "AGENTS.md",
+      "filePath": "AGENTS.md",
+      "summary": "Agent instructions for AI-assisted development. Contains: quick start, project overview (REPL notebook CLI, binary 'idontnote', crate 'idont-notebook', edition 2024, no tests), architecture tree (main.rs → command.rs → handler.rs → repl.rs + storage/ + core/), storage layout (global config + per-notebook), npm distribution via Node.js wrapper and CI cross-compilation, conventions (Chinese user-facing text, command aliases, .md/.txt note suffix), dependency table, build/release workflow.",
+      "tags": [
+        "english",
+        "documentation",
+        "agent-instructions",
+        "architecture",
+        "conventions"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:.codebuddy/plans/implement-storage-init_26117cb1.md",
+      "type": "document",
+      "name": "implement-storage-init plan",
+      "filePath": ".codebuddy/plans/implement-storage-init_26117cb1.md",
+      "summary": "Implementation plan for Storage::init function. Covers: creating .notes directory, writing notes.toml metadata with version and RFC 3339 timestamp, double-initialization guard, NotebookMeta/NotebookInfo/NoteMeta struct design (timestamp as String not chrono type), chrono dependency addition. Todos: add-chrono-dep, implement-init, update-mod-reexport.",
+      "tags": [
+        "english",
+        "plan",
+        "storage",
+        "initialization",
+        "chrono",
+        "toml"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:.codebuddy/plans/mknote-multi-repo_da7b3bf4.md",
+      "type": "document",
+      "name": "mknote-multi-repo plan",
+      "filePath": ".codebuddy/plans/mknote-multi-repo_da7b3bf4.md",
+      "summary": "Implementation plan for multi-repository architecture refactoring and mknote command. Covers: Storage refactor from single to multi-repo with NotebookEntry/GlobalConfig, global config persistence at ~/.idontnote/config.toml, initlib multi-repo registration with optional custom name, mknote full implementation (list repos → select → create file → update notes.toml). Todos: refactor-storage, update-initlib, implement-mknote, update-handler-help.",
+      "tags": [
+        "english",
+        "plan",
+        "multi-repo",
+        "storage",
+        "mknote",
+        "initlib"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:.codebuddy/plans/remove-searchnote-renote-merge-catnote-editnote_28f7d6f9.md",
+      "type": "document",
+      "name": "remove-searchnote-renote-merge-catnote-editnote plan",
+      "filePath": ".codebuddy/plans/remove-searchnote-renote-merge-catnote-editnote_28f7d6f9.md",
+      "summary": "Implementation plan for command simplification: delete searchnote, renote, and catnote commands; add rmnote confirmation prompt (y/N via stdin). Covers removal of 3 core files, cleanup of dead storage method update_note_filename, and updating command.rs/handler.rs/repl.rs/help.rs/readme.md registrations. Todos: remove-dead-commands, add-rmnote-confirm, remove-dead-storage-method, update-readme.",
+      "tags": [
+        "english",
+        "plan",
+        "command-removal",
+        "simplification",
+        "rmnote"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:.codebuddy/plans/simplify-commands_da19a332.md",
+      "type": "document",
+      "name": "simplify-commands plan",
+      "filePath": ".codebuddy/plans/simplify-commands_da19a332.md",
+      "summary": "Implementation plan for adding short command aliases to reduce typing. Mapping: initlib→il, listlib→ll, selectlib→sl, currentlib→cl, mknote→mk, listnote→ls, editnote→ed, rmnote→rm, listlog→log. Aliases added only in command.rs parse function match branches, no Command enum changes. Also updates repl.rs completer and help.rs help text. Todos: add-aliases-to-parser, add-aliases-to-completer, update-help-text.",
+      "tags": [
+        "english",
+        "plan",
+        "command-aliases",
+        "usability",
+        "repl"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/plans/2026-05-08-usability-improvements.md",
+      "type": "document",
+      "name": "usability-improvements plan",
+      "filePath": "docs/superpowers/plans/2026-05-08-usability-improvements.md",
+      "summary": "Comprehensive implementation plan (1086 lines, 8 tasks) for usability improvements: remove file type restrictions on mknote, switch listnote to disk scanning with -a flag for hidden files, add track/untrack commands for hiding/showing files, improve editnote to use system default openers (xdg-open/open/cmd start), add binary detection to catnote, simplify rmnote (delete file + remove from hidden list). Architecture flows bottom-up: models → storage → command parser → core modules → REPL.",
+      "tags": [
+        "english",
+        "plan",
+        "usability",
+        "disk-scanning",
+        "track-untrack",
+        "system-opener"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-05-07-catnote-design.md",
+      "type": "document",
+      "name": "catnote design spec",
+      "filePath": "docs/superpowers/specs/2026-05-07-catnote-design.md",
+      "summary": "Design spec for the catnote command (alias ca). Syntax: catnote <filename> [-n <lines>] [-t <lines>]. Supports printing entire file, first N lines (head), or last N lines (tail). -n and -t mutually exclusive. Requires new Catnote Command variant, parse logic, core/catnote.rs module, handler dispatch, REPL completions, and help text. Hand-rolled arg parsing via splitn.",
+      "tags": [
+        "english",
+        "design-spec",
+        "catnote",
+        "command",
+        "head-tail"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/superpowers/specs/2026-05-08-usability-improvements-design.md",
+      "type": "document",
+      "name": "usability-improvements design spec",
+      "filePath": "docs/superpowers/specs/2026-05-08-usability-improvements-design.md",
+      "summary": "Design spec for usability improvements: (1) remove file type validation, accept any file extension; (2) listnote scans .notes/data/ disk directory directly, filters hidden files, sorts by modification time; (3) new track/untrack commands with hidden list in notes.toml; (4) notes.toml restructured from notes array to tracking.hidden list; (5) editnote uses system default opener per OS; (6) catnote detects binary vs text; (7) rmnote also cleans hidden list; (8) mknote only creates file, no notes.toml update.",
+      "tags": [
+        "english",
+        "design-spec",
+        "usability",
+        "track-untrack",
+        "disk-scan",
+        "system-opener"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/main.rs",
+      "target": "file:src/command.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/main.rs",
+      "target": "file:src/core/mod.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/main.rs",
+      "target": "file:src/handler.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/main.rs",
+      "target": "file:src/repl.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/main.rs",
+      "target": "file:src/storage/mod.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/handler.rs",
+      "target": "file:src/command.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/handler.rs",
+      "target": "file:src/core/mod.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/handler.rs",
+      "target": "file:src/storage/mod.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/repl.rs",
+      "target": "file:src/command.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/repl.rs",
+      "target": "file:src/handler.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/repl.rs",
+      "target": "file:src/storage/mod.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/mod.rs",
+      "target": "file:src/storage/config.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/mod.rs",
+      "target": "file:src/storage/error.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/mod.rs",
+      "target": "file:src/storage/models.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/mod.rs",
+      "target": "file:src/storage/storage.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/config.rs",
+      "target": "file:src/storage/error.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/config.rs",
+      "target": "file:src/storage/models.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/storage.rs",
+      "target": "file:src/storage/error.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/storage.rs",
+      "target": "file:src/storage/models.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/catnote.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/currentlib.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/editnote.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/help.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/initlib.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/listlib.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/listlog.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/listnote.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/mknote.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/rmnote.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/selectlib.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/track.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/untrack.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/catnote.rs",
+      "target": "file:src/storage/mod.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/currentlib.rs",
+      "target": "file:src/storage/mod.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/editnote.rs",
+      "target": "file:src/storage/mod.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/help.rs",
+      "target": "file:src/storage/mod.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/initlib.rs",
+      "target": "file:src/storage/mod.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/listlib.rs",
+      "target": "file:src/storage/mod.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/listlog.rs",
+      "target": "file:src/storage/mod.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/listnote.rs",
+      "target": "file:src/storage/mod.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mknote.rs",
+      "target": "file:src/storage/mod.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/rmnote.rs",
+      "target": "file:src/storage/mod.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/selectlib.rs",
+      "target": "file:src/storage/mod.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/track.rs",
+      "target": "file:src/storage/mod.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/untrack.rs",
+      "target": "file:src/storage/mod.rs",
+      "type": "imports",
+      "label": "imports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/main.rs",
+      "target": "function:src/main.rs:main",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/command.rs",
+      "target": "class:src/command.rs:Command",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/command.rs",
+      "target": "function:src/command.rs:parse",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/handler.rs",
+      "target": "function:src/handler.rs:dispatch",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/handler.rs",
+      "target": "function:src/handler.rs:handle_mknote",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/handler.rs",
+      "target": "function:src/handler.rs:handle_initlib",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/handler.rs",
+      "target": "function:src/handler.rs:handle_listlib",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/handler.rs",
+      "target": "function:src/handler.rs:handle_selectlib",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/handler.rs",
+      "target": "function:src/handler.rs:handle_currentlib",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/handler.rs",
+      "target": "function:src/handler.rs:handle_listnote",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/handler.rs",
+      "target": "function:src/handler.rs:handle_rmnote",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/handler.rs",
+      "target": "function:src/handler.rs:handle_editnote",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/handler.rs",
+      "target": "function:src/handler.rs:handle_catnote",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/handler.rs",
+      "target": "function:src/handler.rs:handle_track",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/handler.rs",
+      "target": "function:src/handler.rs:handle_untrack",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/handler.rs",
+      "target": "function:src/handler.rs:handle_listlog",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/handler.rs",
+      "target": "function:src/handler.rs:handle_help",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/repl.rs",
+      "target": "class:src/repl.rs:IdontCompleter",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/repl.rs",
+      "target": "function:src/repl.rs:IdontCompleter::new",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/repl.rs",
+      "target": "function:src/repl.rs:IdontCompleter::refresh",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/repl.rs",
+      "target": "function:src/repl.rs:IdontCompleter::is_command",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/repl.rs",
+      "target": "function:src/repl.rs:IdontCompleter::complete",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/repl.rs",
+      "target": "function:src/repl.rs:build_prompt",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/repl.rs",
+      "target": "function:src/repl.rs:run",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/models.rs",
+      "target": "class:src/storage/models.rs:NotebookMeta",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/models.rs",
+      "target": "class:src/storage/models.rs:NotebookInfo",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/models.rs",
+      "target": "class:src/storage/models.rs:TrackingInfo",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/models.rs",
+      "target": "class:src/storage/models.rs:NotebookEntry",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/models.rs",
+      "target": "class:src/storage/models.rs:GlobalConfig",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/config.rs",
+      "target": "function:src/storage/config.rs:GlobalConfig::new",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/config.rs",
+      "target": "function:src/storage/config.rs:GlobalConfig::config_path",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/config.rs",
+      "target": "function:src/storage/config.rs:GlobalConfig::load",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/config.rs",
+      "target": "function:src/storage/config.rs:GlobalConfig::save",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/storage.rs",
+      "target": "class:src/storage/storage.rs:Storage",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/storage.rs",
+      "target": "function:src/storage/storage.rs:Storage::new",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/storage.rs",
+      "target": "function:src/storage/storage.rs:Storage::init_notebook",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/storage.rs",
+      "target": "function:src/storage/storage.rs:Storage::list_notebooks",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/storage.rs",
+      "target": "function:src/storage/storage.rs:Storage::get_notebook",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/storage.rs",
+      "target": "function:src/storage/storage.rs:Storage::notebook_count",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/storage.rs",
+      "target": "function:src/storage/storage.rs:Storage::select_notebook",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/storage.rs",
+      "target": "function:src/storage/storage.rs:Storage::current_notebook_index",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/storage.rs",
+      "target": "function:src/storage/storage.rs:Storage::require_current_notebook",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/storage.rs",
+      "target": "function:src/storage/storage.rs:Storage::require_current_index",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/storage.rs",
+      "target": "function:src/storage/storage.rs:Storage::is_initialized",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/storage.rs",
+      "target": "function:src/storage/storage.rs:Storage::create_note",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/storage.rs",
+      "target": "function:src/storage/storage.rs:Storage::get_note_path",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/storage.rs",
+      "target": "function:src/storage/storage.rs:Storage::scan_notes",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/storage.rs",
+      "target": "function:src/storage/storage.rs:Storage::get_hidden_files",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/storage.rs",
+      "target": "function:src/storage/storage.rs:Storage::hide_file",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/storage.rs",
+      "target": "function:src/storage/storage.rs:Storage::unhide_file",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/storage.rs",
+      "target": "function:src/storage/storage.rs:Storage::remove_from_hidden",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/storage.rs",
+      "target": "function:src/storage/storage.rs:Storage::with_tracking_mut",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/storage.rs",
+      "target": "function:src/storage/storage.rs:Storage::default",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/error.rs",
+      "target": "class:src/storage/error.rs:StorageError",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/catnote.rs",
+      "target": "function:src/core/catnote.rs:catnote",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/currentlib.rs",
+      "target": "function:src/core/currentlib.rs:currentlib",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/editnote.rs",
+      "target": "function:src/core/editnote.rs:editnote",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/editnote.rs",
+      "target": "function:src/core/editnote.rs:open_file",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/editnote.rs",
+      "target": "function:src/core/editnote.rs:is_wsl",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/help.rs",
+      "target": "function:src/core/help.rs:help",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/initlib.rs",
+      "target": "function:src/core/initlib.rs:initlib",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/listlib.rs",
+      "target": "function:src/core/listlib.rs:listlib",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/listlog.rs",
+      "target": "function:src/core/listlog.rs:listlog",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/listnote.rs",
+      "target": "function:src/core/listnote.rs:listnote",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mknote.rs",
+      "target": "function:src/core/mknote.rs:mknote",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/rmnote.rs",
+      "target": "function:src/core/rmnote.rs:rmnote",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/selectlib.rs",
+      "target": "function:src/core/selectlib.rs:selectlib",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/track.rs",
+      "target": "function:src/core/track.rs:track",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/untrack.rs",
+      "target": "function:src/core/untrack.rs:untrack",
+      "type": "contains",
+      "label": "contains",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/mod.rs",
+      "target": "class:src/storage/storage.rs:Storage",
+      "type": "exports",
+      "label": "exports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/mod.rs",
+      "target": "class:src/storage/error.rs:StorageError",
+      "type": "exports",
+      "label": "exports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/mod.rs",
+      "target": "class:src/storage/models.rs:NotebookMeta",
+      "type": "exports",
+      "label": "exports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/mod.rs",
+      "target": "class:src/storage/models.rs:NotebookInfo",
+      "type": "exports",
+      "label": "exports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/storage/mod.rs",
+      "target": "class:src/storage/models.rs:NotebookEntry",
+      "type": "exports",
+      "label": "exports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/catnote.rs",
+      "type": "exports",
+      "label": "exports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/currentlib.rs",
+      "type": "exports",
+      "label": "exports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/editnote.rs",
+      "type": "exports",
+      "label": "exports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/help.rs",
+      "type": "exports",
+      "label": "exports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/initlib.rs",
+      "type": "exports",
+      "label": "exports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/listlib.rs",
+      "type": "exports",
+      "label": "exports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/listlog.rs",
+      "type": "exports",
+      "label": "exports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/listnote.rs",
+      "type": "exports",
+      "label": "exports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/mknote.rs",
+      "type": "exports",
+      "label": "exports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/rmnote.rs",
+      "type": "exports",
+      "label": "exports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/selectlib.rs",
+      "type": "exports",
+      "label": "exports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/track.rs",
+      "type": "exports",
+      "label": "exports",
+      "direction": "forward"
+    },
+    {
+      "source": "file:src/core/mod.rs",
+      "target": "file:src/core/untrack.rs",
+      "type": "exports",
+      "label": "exports",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/main.rs:main",
+      "target": "function:src/storage/storage.rs:Storage::new",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/main.rs:main",
+      "target": "function:src/repl.rs:run",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/repl.rs:run",
+      "target": "function:src/repl.rs:IdontCompleter::new",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/repl.rs:run",
+      "target": "function:src/repl.rs:build_prompt",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/repl.rs:run",
+      "target": "function:src/command.rs:parse",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/repl.rs:run",
+      "target": "function:src/handler.rs:dispatch",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/repl.rs:run",
+      "target": "function:src/repl.rs:IdontCompleter::refresh",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/repl.rs:IdontCompleter::refresh",
+      "target": "function:src/storage/storage.rs:Storage::list_notebooks",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/repl.rs:IdontCompleter::refresh",
+      "target": "function:src/storage/storage.rs:Storage::current_notebook_index",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/repl.rs:IdontCompleter::refresh",
+      "target": "function:src/storage/storage.rs:Storage::scan_notes",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/repl.rs:build_prompt",
+      "target": "function:src/storage/storage.rs:Storage::current_notebook_index",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/repl.rs:build_prompt",
+      "target": "function:src/storage/storage.rs:Storage::get_notebook",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:dispatch",
+      "target": "function:src/handler.rs:handle_mknote",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:dispatch",
+      "target": "function:src/handler.rs:handle_initlib",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:dispatch",
+      "target": "function:src/handler.rs:handle_listlib",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:dispatch",
+      "target": "function:src/handler.rs:handle_selectlib",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:dispatch",
+      "target": "function:src/handler.rs:handle_currentlib",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:dispatch",
+      "target": "function:src/handler.rs:handle_listnote",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:dispatch",
+      "target": "function:src/handler.rs:handle_rmnote",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:dispatch",
+      "target": "function:src/handler.rs:handle_editnote",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:dispatch",
+      "target": "function:src/handler.rs:handle_catnote",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:dispatch",
+      "target": "function:src/handler.rs:handle_track",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:dispatch",
+      "target": "function:src/handler.rs:handle_untrack",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:dispatch",
+      "target": "function:src/handler.rs:handle_listlog",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:dispatch",
+      "target": "function:src/handler.rs:handle_help",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:handle_mknote",
+      "target": "function:src/core/mknote.rs:mknote",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:handle_initlib",
+      "target": "function:src/core/initlib.rs:initlib",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:handle_listlib",
+      "target": "function:src/core/listlib.rs:listlib",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:handle_selectlib",
+      "target": "function:src/core/selectlib.rs:selectlib",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:handle_currentlib",
+      "target": "function:src/core/currentlib.rs:currentlib",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:handle_listnote",
+      "target": "function:src/core/listnote.rs:listnote",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:handle_rmnote",
+      "target": "function:src/core/rmnote.rs:rmnote",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:handle_editnote",
+      "target": "function:src/core/editnote.rs:editnote",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:handle_catnote",
+      "target": "function:src/core/catnote.rs:catnote",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:handle_track",
+      "target": "function:src/core/track.rs:track",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:handle_untrack",
+      "target": "function:src/core/untrack.rs:untrack",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:handle_listlog",
+      "target": "function:src/core/listlog.rs:listlog",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/handler.rs:handle_help",
+      "target": "function:src/core/help.rs:help",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/mknote.rs:mknote",
+      "target": "function:src/storage/storage.rs:Storage::require_current_index",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/mknote.rs:mknote",
+      "target": "function:src/storage/storage.rs:Storage::create_note",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/initlib.rs:initlib",
+      "target": "function:src/storage/storage.rs:Storage::init_notebook",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/initlib.rs:initlib",
+      "target": "function:src/storage/storage.rs:Storage::get_notebook",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/listlib.rs:listlib",
+      "target": "function:src/storage/storage.rs:Storage::list_notebooks",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/listlib.rs:listlib",
+      "target": "function:src/storage/storage.rs:Storage::current_notebook_index",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/selectlib.rs:selectlib",
+      "target": "function:src/storage/storage.rs:Storage::select_notebook",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/selectlib.rs:selectlib",
+      "target": "function:src/storage/storage.rs:Storage::get_notebook",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/currentlib.rs:currentlib",
+      "target": "function:src/storage/storage.rs:Storage::require_current_notebook",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/currentlib.rs:currentlib",
+      "target": "function:src/storage/storage.rs:Storage::current_notebook_index",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/listnote.rs:listnote",
+      "target": "function:src/storage/storage.rs:Storage::require_current_index",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/listnote.rs:listnote",
+      "target": "function:src/storage/storage.rs:Storage::scan_notes",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/listnote.rs:listnote",
+      "target": "function:src/storage/storage.rs:Storage::get_hidden_files",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/rmnote.rs:rmnote",
+      "target": "function:src/storage/storage.rs:Storage::require_current_index",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/rmnote.rs:rmnote",
+      "target": "function:src/storage/storage.rs:Storage::get_note_path",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/rmnote.rs:rmnote",
+      "target": "function:src/storage/storage.rs:Storage::remove_from_hidden",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/editnote.rs:editnote",
+      "target": "function:src/storage/storage.rs:Storage::require_current_index",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/editnote.rs:editnote",
+      "target": "function:src/storage/storage.rs:Storage::get_note_path",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/editnote.rs:editnote",
+      "target": "function:src/core/editnote.rs:open_file",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/editnote.rs:open_file",
+      "target": "function:src/core/editnote.rs:is_wsl",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/catnote.rs:catnote",
+      "target": "function:src/storage/storage.rs:Storage::require_current_index",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/catnote.rs:catnote",
+      "target": "function:src/storage/storage.rs:Storage::get_note_path",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/track.rs:track",
+      "target": "function:src/storage/storage.rs:Storage::require_current_index",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/track.rs:track",
+      "target": "function:src/storage/storage.rs:Storage::unhide_file",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/untrack.rs:untrack",
+      "target": "function:src/storage/storage.rs:Storage::require_current_index",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/untrack.rs:untrack",
+      "target": "function:src/storage/storage.rs:Storage::get_note_path",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/core/untrack.rs:untrack",
+      "target": "function:src/storage/storage.rs:Storage::hide_file",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/storage/storage.rs:Storage::new",
+      "target": "function:src/storage/config.rs:GlobalConfig::load",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/storage/storage.rs:Storage::init_notebook",
+      "target": "function:src/storage/config.rs:GlobalConfig::save",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/storage/storage.rs:Storage::hide_file",
+      "target": "function:src/storage/storage.rs:Storage::with_tracking_mut",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/storage/storage.rs:Storage::unhide_file",
+      "target": "function:src/storage/storage.rs:Storage::with_tracking_mut",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/storage/storage.rs:Storage::remove_from_hidden",
+      "target": "function:src/storage/storage.rs:Storage::with_tracking_mut",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/storage/storage.rs:Storage::with_tracking_mut",
+      "target": "class:src/storage/models.rs:NotebookMeta",
+      "type": "calls",
+      "label": "uses",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/storage/storage.rs:Storage::with_tracking_mut",
+      "target": "class:src/storage/models.rs:NotebookInfo",
+      "type": "calls",
+      "label": "uses",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/storage/storage.rs:Storage::with_tracking_mut",
+      "target": "class:src/storage/models.rs:TrackingInfo",
+      "type": "calls",
+      "label": "uses",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/storage/storage.rs:Storage::get_hidden_files",
+      "target": "class:src/storage/models.rs:NotebookMeta",
+      "type": "calls",
+      "label": "uses",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/storage/storage.rs:Storage::default",
+      "target": "function:src/storage/storage.rs:Storage::new",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/storage/config.rs:GlobalConfig::load",
+      "target": "function:src/storage/config.rs:GlobalConfig::config_path",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/storage/config.rs:GlobalConfig::load",
+      "target": "function:src/storage/config.rs:GlobalConfig::new",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/storage/config.rs:GlobalConfig::save",
+      "target": "function:src/storage/config.rs:GlobalConfig::config_path",
+      "type": "calls",
+      "label": "calls",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/storage/storage.rs:Storage::init_notebook",
+      "target": "class:src/storage/models.rs:NotebookMeta",
+      "type": "calls",
+      "label": "uses",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/storage/storage.rs:Storage::init_notebook",
+      "target": "class:src/storage/models.rs:NotebookInfo",
+      "type": "calls",
+      "label": "uses",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/storage/storage.rs:Storage::init_notebook",
+      "target": "class:src/storage/models.rs:TrackingInfo",
+      "type": "calls",
+      "label": "uses",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/storage/storage.rs:Storage::init_notebook",
+      "target": "class:src/storage/models.rs:NotebookEntry",
+      "type": "calls",
+      "label": "uses",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/storage/storage.rs:Storage::init_notebook",
+      "target": "class:src/storage/models.rs:GlobalConfig",
+      "type": "calls",
+      "label": "uses",
+      "direction": "forward"
+    },
+    {
+      "source": "function:src/storage/storage.rs:Storage::new",
+      "target": "class:src/storage/models.rs:GlobalConfig",
+      "type": "calls",
+      "label": "uses",
+      "direction": "forward"
+    },
+    {
+      "source": "class:src/storage/models.rs:NotebookMeta",
+      "target": "class:src/storage/models.rs:NotebookInfo",
+      "type": "composes",
+      "label": "composes",
+      "direction": "forward"
+    },
+    {
+      "source": "class:src/storage/models.rs:NotebookMeta",
+      "target": "class:src/storage/models.rs:TrackingInfo",
+      "type": "composes",
+      "label": "composes",
+      "direction": "forward"
+    },
+    {
+      "source": "class:src/storage/models.rs:GlobalConfig",
+      "target": "class:src/storage/models.rs:NotebookEntry",
+      "type": "composes",
+      "label": "composes",
+      "direction": "forward"
+    },
+    {
+      "source": "config:Cargo.toml",
+      "target": "file:bin/idontnote.js",
+      "relation": "configures",
+      "label": "declares binary 'idontnote' compiled from src/main.rs",
+      "direction": "forward"
+    },
+    {
+      "source": "config:Cargo.lock",
+      "target": "config:Cargo.toml",
+      "relation": "depends_on",
+      "label": "locks dependency versions declared in Cargo.toml",
+      "direction": "forward"
+    },
+    {
+      "source": "config:package.json",
+      "target": "file:bin/idontnote.js",
+      "relation": "configures",
+      "label": "declares bin entry point as ./bin/idontnote.js",
+      "direction": "forward"
+    },
+    {
+      "source": "config:package.json",
+      "target": "config:Cargo.toml",
+      "relation": "depends_on",
+      "label": "version sync (both 0.1.3)",
+      "direction": "forward"
+    },
+    {
+      "source": "config:.gitignore",
+      "target": "config:Cargo.toml",
+      "relation": "configures",
+      "label": "ignores /target build artifacts from Cargo",
+      "direction": "forward"
+    },
+    {
+      "source": "config:.gitignore",
+      "target": "document:.codebuddy/plans/implement-storage-init_26117cb1.md",
+      "relation": "configures",
+      "label": "ignores /.codebuddy directory",
+      "direction": "forward"
+    },
+    {
+      "source": "config:.gitignore",
+      "target": "config:.notes/notes.toml",
+      "relation": "configures",
+      "label": "ignores /.notes test data",
+      "direction": "forward"
+    },
+    {
+      "source": "config:.npmignore",
+      "target": "config:package.json",
+      "relation": "configures",
+      "label": "restricts npm publish to bin/ and README.md only, excludes src/ and Cargo.toml",
+      "direction": "forward"
+    },
+    {
+      "source": "config:.npmignore",
+      "target": "file:scripts/check-binaries.js",
+      "relation": "configures",
+      "label": "excludes scripts/ from npm publish",
+      "direction": "forward"
+    },
+    {
+      "source": "config:.notes/notes.toml",
+      "target": "document:readme.md",
+      "relation": "configures",
+      "label": "test instance of per-notebook metadata format described in readme",
+      "direction": "forward"
+    },
+    {
+      "source": "file:bin/idontnote.js",
+      "target": "config:Cargo.toml",
+      "relation": "depends_on",
+      "label": "spawns the Rust binary 'idontnote' declared in Cargo.toml",
+      "direction": "forward"
+    },
+    {
+      "source": "file:bin/idontnote.js",
+      "target": "pipeline:.github/workflows/publish.yml",
+      "relation": "depends_on",
+      "label": "packaged alongside platform binaries built by CI",
+      "direction": "forward"
+    },
+    {
+      "source": "file:scripts/check-binaries.js",
+      "target": "config:package.json",
+      "relation": "depends_on",
+      "label": "reads bin entries from package.json to validate binary existence",
+      "direction": "forward"
+    },
+    {
+      "source": "file:scripts/check-binaries.js",
+      "target": "file:bin/idontnote.js",
+      "relation": "validates",
+      "label": "checks that idontnote.js wrapper exists before npm publish",
+      "direction": "forward"
+    },
+    {
+      "source": "pipeline:.github/workflows/publish.yml",
+      "target": "config:package.json",
+      "relation": "deploys",
+      "label": "builds platform binaries, sets version from tag, publishes to npm",
+      "direction": "forward"
+    },
+    {
+      "source": "pipeline:.github/workflows/publish.yml",
+      "target": "config:Cargo.toml",
+      "relation": "deploys",
+      "label": "runs cargo build --release for 6 platform targets",
+      "direction": "forward"
+    },
+    {
+      "source": "pipeline:.github/workflows/publish.yml",
+      "target": "file:bin/idontnote.js",
+      "relation": "deploys",
+      "label": "places compiled binaries alongside idontnote.js wrapper and publishes to npm",
+      "direction": "forward"
+    },
+    {
+      "source": "pipeline:.github/workflows/publish.yml",
+      "target": "file:scripts/check-binaries.js",
+      "relation": "triggers",
+      "label": "triggers prepublishOnly hook which runs check-binaries.js",
+      "direction": "forward"
+    },
+    {
+      "source": "document:readme.md",
+      "target": "config:Cargo.toml",
+      "relation": "documents",
+      "label": "documents installation via cargo install and local build",
+      "direction": "forward"
+    },
+    {
+      "source": "document:readme.md",
+      "target": "config:package.json",
+      "relation": "documents",
+      "label": "documents installation via npm install -g",
+      "direction": "forward"
+    },
+    {
+      "source": "document:readme.md",
+      "target": "config:.notes/notes.toml",
+      "relation": "documents",
+      "label": "documents notes.toml structure and storage mechanism",
+      "direction": "forward"
+    },
+    {
+      "source": "document:AGENTS.md",
+      "target": "config:Cargo.toml",
+      "relation": "documents",
+      "label": "documents Rust edition 2024 requirement and dependency crates",
+      "direction": "forward"
+    },
+    {
+      "source": "document:AGENTS.md",
+      "target": "file:bin/idontnote.js",
+      "relation": "documents",
+      "label": "documents npm distribution via Node.js wrapper",
+      "direction": "forward"
+    },
+    {
+      "source": "document:AGENTS.md",
+      "target": "pipeline:.github/workflows/publish.yml",
+      "relation": "documents",
+      "label": "documents CI cross-compilation and npm publish workflow",
+      "direction": "forward"
+    },
+    {
+      "source": "document:AGENTS.md",
+      "target": "config:.notes/notes.toml",
+      "relation": "documents",
+      "label": "documents per-notebook storage layout (.notes/notes.toml + .notes/data/)",
+      "direction": "forward"
+    },
+    {
+      "source": "document:.codebuddy/plans/implement-storage-init_26117cb1.md",
+      "target": "config:Cargo.toml",
+      "relation": "documents",
+      "label": "proposes adding chrono dependency for RFC 3339 timestamps in notes.toml",
+      "direction": "forward"
+    },
+    {
+      "source": "document:.codebuddy/plans/implement-storage-init_26117cb1.md",
+      "target": "config:.notes/notes.toml",
+      "relation": "documents",
+      "label": "designs the notes.toml metadata format (NotebookMeta with version and created_at)",
+      "direction": "forward"
+    },
+    {
+      "source": "document:.codebuddy/plans/mknote-multi-repo_da7b3bf4.md",
+      "target": "config:.notes/notes.toml",
+      "relation": "documents",
+      "label": "designs multi-repo global config persistence at ~/.idontnote/config.toml",
+      "direction": "forward"
+    },
+    {
+      "source": "document:.codebuddy/plans/remove-searchnote-renote-merge-catnote-editnote_28f7d6f9.md",
+      "target": "document:readme.md",
+      "relation": "documents",
+      "label": "requires updating readme command list after deleting 3 commands",
+      "direction": "forward"
+    },
+    {
+      "source": "document:.codebuddy/plans/simplify-commands_da19a332.md",
+      "target": "document:readme.md",
+      "relation": "documents",
+      "label": "introduces short aliases used in readme examples (mk, il, sl, cl, ls, rm, ed, ca, log)",
+      "direction": "forward"
+    },
+    {
+      "source": "document:docs/superpowers/plans/2026-05-08-usability-improvements.md",
+      "target": "document:docs/superpowers/specs/2026-05-08-usability-improvements-design.md",
+      "relation": "depends_on",
+      "label": "implements the design spec with step-by-step tasks",
+      "direction": "forward"
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-05-08-usability-improvements-design.md",
+      "target": "config:.notes/notes.toml",
+      "relation": "documents",
+      "label": "redesigns notes.toml from notes array to tracking.hidden list structure",
+      "direction": "forward"
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-05-08-usability-improvements-design.md",
+      "target": "config:.notes/data/test.txt",
+      "relation": "documents",
+      "label": "supports arbitrary file types in .notes/data/ including .txt",
+      "direction": "forward"
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-05-08-usability-improvements-design.md",
+      "target": "config:.notes/data/test.docx",
+      "relation": "documents",
+      "label": "supports arbitrary file types in .notes/data/ including .docx",
+      "direction": "forward"
+    },
+    {
+      "source": "document:docs/superpowers/specs/2026-05-07-catnote-design.md",
+      "target": "config:.notes/data/test.txt",
+      "relation": "documents",
+      "label": "catnote prints text file contents with optional head/tail line limiting",
+      "direction": "forward"
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer:core-app",
+      "name": "Application Core",
+      "description": "Binary entry point and REPL interactive loop with tab completion, dynamic prompt, and rustyline integration",
+      "nodeIds": [
+        "file:src/main.rs",
+        "file:src/repl.rs"
+      ]
+    },
+    {
+      "id": "layer:command-layer",
+      "name": "Command Layer",
+      "description": "Command enum definition and user input parsing with validation, aliases, and argument tokenization",
+      "nodeIds": [
+        "file:src/command.rs"
+      ]
+    },
+    {
+      "id": "layer:dispatch-layer",
+      "name": "Dispatch Layer",
+      "description": "Intermediate dispatch layer mapping parsed Command variants to core handler function calls with session log tracking",
+      "nodeIds": [
+        "file:src/handler.rs"
+      ]
+    },
+    {
+      "id": "layer:storage-layer",
+      "name": "Storage Layer",
+      "description": "Data models, global config persistence, notebook registry, note CRUD, file scanning, tracking, and error definitions",
+      "nodeIds": [
+        "file:src/storage/mod.rs",
+        "file:src/storage/models.rs",
+        "file:src/storage/config.rs",
+        "file:src/storage/storage.rs",
+        "file:src/storage/error.rs"
+      ]
+    },
+    {
+      "id": "layer:command-handlers",
+      "name": "Command Handlers",
+      "description": "Core command implementations — one file per command — handling notebook init, selection, note creation, viewing, editing, deletion, hiding, and help",
+      "nodeIds": [
+        "file:src/core/mod.rs",
+        "file:src/core/catnote.rs",
+        "file:src/core/currentlib.rs",
+        "file:src/core/editnote.rs",
+        "file:src/core/help.rs",
+        "file:src/core/initlib.rs",
+        "file:src/core/listlib.rs",
+        "file:src/core/listlog.rs",
+        "file:src/core/listnote.rs",
+        "file:src/core/mknote.rs",
+        "file:src/core/rmnote.rs",
+        "file:src/core/selectlib.rs",
+        "file:src/core/track.rs",
+        "file:src/core/untrack.rs"
+      ]
+    },
+    {
+      "id": "layer:npm-distribution",
+      "name": "NPM Distribution",
+      "description": "Node.js wrapper script for cross-platform binary launching and pre-publish binary validation",
+      "nodeIds": [
+        "file:bin/idontnote.js",
+        "file:scripts/check-binaries.js"
+      ]
+    },
+    {
+      "id": "layer:ci-cd",
+      "name": "CI/CD",
+      "description": "GitHub Actions pipeline for cross-compilation, artifact collection, and npm publishing on version tags",
+      "nodeIds": [
+        "pipeline:.github/workflows/publish.yml"
+      ]
+    },
+    {
+      "id": "layer:project-config",
+      "name": "Project Configuration",
+      "description": "Rust package manifest, dependency lock file, npm package manifest, and git/npm ignore patterns",
+      "nodeIds": [
+        "config:Cargo.toml",
+        "config:Cargo.lock",
+        "config:package.json",
+        "config:.gitignore",
+        "config:.npmignore"
+      ]
+    },
+    {
+      "id": "layer:test-data",
+      "name": "Test Data",
+      "description": "Sample notebook metadata and test files used for validating notebook initialization, scanning, and file type handling",
+      "nodeIds": [
+        "config:.notes/notes.toml",
+        "config:.notes/data/test.docx",
+        "config:.notes/data/test.txt"
+      ]
+    },
+    {
+      "id": "layer:documentation",
+      "name": "Documentation",
+      "description": "Project README, agent development instructions, implementation plans, and design specifications",
+      "nodeIds": [
+        "document:readme.md",
+        "document:AGENTS.md",
+        "document:.codebuddy/plans/implement-storage-init_26117cb1.md",
+        "document:.codebuddy/plans/mknote-multi-repo_da7b3bf4.md",
+        "document:.codebuddy/plans/remove-searchnote-renote-merge-catnote-editnote_28f7d6f9.md",
+        "document:.codebuddy/plans/simplify-commands_da19a332.md",
+        "document:docs/superpowers/plans/2026-05-08-usability-improvements.md",
+        "document:docs/superpowers/specs/2026-05-07-catnote-design.md",
+        "document:docs/superpowers/specs/2026-05-08-usability-improvements-design.md"
+      ]
+    }
+  ],
+  "tour": [
+    {
+      "order": 1,
+      "title": "Project Overview",
+      "description": "Start here to understand what this project is and how it is structured. The README (in Chinese) explains the features: multi-notebook management, note CRUD via REPL, file hiding/tracking, and cross-platform distribution via npm. AGENTS.md (in English) provides a technical architecture overview, conventions (all user-facing text in Chinese, command aliases, note filename validation), and the dependency table. Together these documents give you the 'why' and 'how' of the project before diving into code.",
+      "nodeIds": [
+        "document:readme.md",
+        "document:AGENTS.md"
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Entry Point a Application Bootstrap",
+      "description": "The application starts in src/main.rs (13 lines). It declares five modules (command, core, handler, repl, storage), then calls Storage::new() to load the global config from disk, and enters the REPL loop via repl::run(). On fatal error, it prints a Chinese error message and exits with code 1. This is a classic Rust pattern: a thin main() that wires together the major components and delegates to a run function. Notice how Storage is created as mutable and passed by &mut to the REPL a the REPL owns the runtime loop but the Storage struct carries all persistent state.",
+      "nodeIds": [
+        "file:src/main.rs",
+        "function:src/main.rs:main",
+        "class:src/storage/storage.rs:Storage",
+        "function:src/storage/storage.rs:Storage::new"
+      ],
+      "languageLesson": "Rust pattern a module declarations: The `mod command;` style in main.rs tells Rust to look for src/command.rs (or src/command/mod.rs). Each file is a module, and `pub` visibility controls cross-module access. The entry point `fn main()` is the convention for binary crates a no macros or attributes needed."
+    },
+    {
+      "order": 3,
+      "title": "Command Parsing a User Input to Typed Commands",
+      "description": "src/command.rs defines the Command enum (15 variants like Mknote, Initlib, Selectlib, Catnote, etc.) and the parse() function. The parse() function takes raw user input, splits on whitespace, matches the first word against command names and their short aliases (mk, il, sl, cl, ls, rm, ed, ca, log), validates arguments, and returns a typed Command variant or a Chinese error string. Key patterns: catnote supports -n (head) and -t (tail) options with mutual exclusion enforcement; listnote takes an optional -a flag for a show all. The enum uses both simple variants (Listlib, Help, Exit) and tuple/struct variants (Mknote(String), Listnote { show_all: bool }) a idiomatic Rust for carrying parsed arguments.",
+      "nodeIds": [
+        "file:src/command.rs",
+        "class:src/command.rs:Command",
+        "function:src/command.rs:parse"
+      ],
+      "languageLesson": "Rust pattern a enum-based command representation: Each command becomes an enum variant, and the variant payload (String, Option<usize>, bool) carries the parsed arguments. This is type-safe: the dispatch layer pattern-matches on the enum and the compiler guarantees all cases are handled. Compare this to string-based dispatch in dynamic languages a the Rust compiler catches forgotten commands at compile time."
+    },
+    {
+      "order": 4,
+      "title": "REPL Loop a rustyline Integration with Tab Completion",
+      "description": "src/repl.rs (214 lines) is the heart of the interactive experience. It uses the rustyline crate to provide a readline-style REPL with: (1) Context-aware tab completion via IdontCompleter a completes command names on the first word, then switches to notebook names for selectlib/initlib, note filenames for rmnote/editnote/catnote/track/untrack, and the -a flag for listnote. (2) A dynamic prompt build_prompt() that shows idont(<notebook>)> when a notebook is selected, otherwise idontnote>. (3) The run() function loops: refreshes the completer cache from Storage, reads input, parses via command::parse, dispatches via handler::dispatch, and maintains a session command log. Ctrl+C prints a hint, Ctrl+D exits gracefully. The IdontCompleter must implement five rustyline traits: Completer, Hinter, Highlighter, Validator, and Helper a a Rust trait combinator pattern.",
+      "nodeIds": [
+        "file:src/repl.rs",
+        "class:src/repl.rs:IdontCompleter",
+        "function:src/repl.rs:IdontCompleter::new",
+        "function:src/repl.rs:IdontCompleter::refresh",
+        "function:src/repl.rs:IdontCompleter::complete",
+        "function:src/repl.rs:build_prompt",
+        "function:src/repl.rs:run"
+      ],
+      "languageLesson": "Rust pattern a trait objects and helpers: rustyline uses a Helper trait that bundles Completer + Hinter + Highlighter + Validator. IdontCompleter implements all four (many with blank impls) to satisfy the constraint. The Editor::set_helper(Some(completer)) call takes ownership, but helper_mut() returns a mutable reference for on-the-fly cache refresh a a common pattern for mutable state behind a trait object."
+    },
+    {
+      "order": 5,
+      "title": "Dispatch Layer a Commands to Handlers",
+      "description": "src/handler.rs (75 lines) is the glue between parsed commands and core logic. Each command has a handle_* function that calls into the corresponding src/core/ module. The dispatch() function pattern-matches on the Command enum and routes to the right handler, passing along the parsed arguments. Notice: (1) The session log (Vec<String>) is passed to handle_listlog for displaying command history. (2) Command::Exit returns Ok(true) signaling the REPL to break its loop, while all other commands return Ok(false) to continue. (3) Each handle_* wrapper is thin a typically one line delegating to the core module with Storage reference and relevant arguments. This separation keeps the REPL loop clean (it only calls dispatch) and makes handlers independently testable.",
+      "nodeIds": [
+        "file:src/handler.rs",
+        "function:src/handler.rs:dispatch",
+        "function:src/handler.rs:handle_mknote",
+        "function:src/handler.rs:handle_initlib",
+        "function:src/handler.rs:handle_listnote",
+        "function:src/handler.rs:handle_catnote",
+        "function:src/handler.rs:handle_rmnote",
+        "function:src/handler.rs:handle_editnote",
+        "function:src/handler.rs:handle_help"
+      ],
+      "languageLesson": "Rust pattern a match-based dispatch: The match cmd { Command::Mknote(filename) => ... } syntax is exhaustive pattern matching. If a new Command variant is added to the enum, the compiler will error here until the match is updated a preventing silent failures. The ? operator propagates StorageError results upward; if any handler fails, the error bubbles to the REPL loop which prints it and continues."
+    },
+    {
+      "order": 6,
+      "title": "Storage Layer a Data Models, Persistence, and Notebook Management",
+      "description": "The src/storage/ directory is the data access layer, split into four files: (1) models.rs defines the data structs a NotebookMeta (with NotebookInfo for version/timestamp and TrackingInfo for hidden files), NotebookEntry (name + path), and GlobalConfig (list of registered notebooks). Constants define file paths (.notes, notes.toml, data/). All are serde-derivable for TOML serialization. (2) config.rs handles loading/saving GlobalConfig from ~/.idont/idont-notebook-config.toml using toml serialization with graceful defaults. (3) error.rs defines StorageError via thiserror a an enum with 8 variants, each with a Chinese #[error] message. std::io::Error is converted via #[from]. (4) storage.rs is the main Storage struct a 272 lines implementing notebook lifecycle (init, list, select, get_by_index), note CRUD (create_note, get_note_path, scan_notes), and file tracking (hide_file, unhide_file, remove_from_hidden) using a with_tracking_mut helper that reads, mutates, and writes notes.toml.",
+      "nodeIds": [
+        "file:src/storage/mod.rs",
+        "file:src/storage/models.rs",
+        "file:src/storage/config.rs",
+        "file:src/storage/storage.rs",
+        "file:src/storage/error.rs",
+        "class:src/storage/models.rs:NotebookMeta",
+        "class:src/storage/models.rs:NotebookEntry",
+        "class:src/storage/models.rs:GlobalConfig",
+        "class:src/storage/models.rs:TrackingInfo",
+        "class:src/storage/error.rs:StorageError",
+        "function:src/storage/storage.rs:Storage::init_notebook",
+        "function:src/storage/storage.rs:Storage::create_note",
+        "function:src/storage/storage.rs:Storage::scan_notes",
+        "function:src/storage/storage.rs:Storage::with_tracking_mut",
+        "function:src/storage/config.rs:GlobalConfig::load",
+        "function:src/storage/config.rs:GlobalConfig::save"
+      ],
+      "languageLesson": "Rust pattern a serde + thiserror: #[derive(Serialize, Deserialize)] on structs enables automatic TOML/JSON serialization with zero boilerplate. The thiserror crate uses #[derive(Error)] + #[error(\"...\")] attributes to auto-generate Display and Error implementations for enums. The #[from] attribute on a variant auto-implements From<IoError> for StorageError, enabling the ? operator on IO operations. The with_tracking_mut pattern (closure-based read-modify-write) encapsulates the full lifecycle of parse, mutate, serialize, write a common in Rust for guarded mutable operations."
+    },
+    {
+      "order": 7,
+      "title": "Command Handlers a One File Per Command",
+      "description": "The src/core/ directory contains 13 modules, one per command. Each file exports a single public function that takes a &Storage or &mut Storage reference plus parsed arguments, performs its operation, and returns Result<(), StorageError>. Highlights: (1) mknote.rs calls storage.require_current_index() then storage.create_note() a concise 7-line implementation. (2) editnote.rs is the most complex a it opens a note file with the system default application using a cross-platform open_file() helper that handles Windows (cmd /c start), macOS (open), WSL (wslview/explorer.exe), and Linux (xdg-open). The is_wsl() detector checks WSL_DISTRO_NAME env var and /proc/version for Microsoft markers. (3) rmnote.rs prompts for confirmation via stdin before deleting a note and also cleans up its tracking entry. (4) listnote.rs filters hidden files by default, with a -a flag to show all including hidden entries. (5) catnote.rs reads file content with optional -n (head) and -t (tail) line limits, detecting binary files to avoid garbled output. All commands follow a consistent pattern: validate preconditions via Storage, perform the operation, print Chinese output.",
+      "nodeIds": [
+        "file:src/core/mod.rs",
+        "file:src/core/mknote.rs",
+        "file:src/core/editnote.rs",
+        "file:src/core/rmnote.rs",
+        "file:src/core/listnote.rs",
+        "file:src/core/catnote.rs",
+        "file:src/core/initlib.rs",
+        "file:src/core/selectlib.rs",
+        "file:src/core/listlib.rs",
+        "file:src/core/currentlib.rs",
+        "file:src/core/track.rs",
+        "file:src/core/untrack.rs",
+        "file:src/core/listlog.rs",
+        "file:src/core/help.rs",
+        "function:src/core/mknote.rs:mknote",
+        "function:src/core/editnote.rs:editnote",
+        "function:src/core/editnote.rs:open_file",
+        "function:src/core/editnote.rs:is_wsl",
+        "function:src/core/rmnote.rs:rmnote",
+        "function:src/core/catnote.rs:catnote"
+      ],
+      "languageLesson": "Rust pattern a single-function modules: Each command is its own file/module with one public function. This is distinct from OOP classes a there is no struct wrapping behavior, just free functions taking Storage as a parameter. It keeps each file focused (average ~30 lines) and makes adding a new command a routine: create src/core/newcmd.rs, add mod newcmd to core/mod.rs, add a Command variant, add a handler, wire it in dispatch. The &Storage vs &mut Storage distinction enforces at compile time which commands need write access."
+    },
+    {
+      "order": 8,
+      "title": "Build and Distribution a Cross-Platform via Rust + npm",
+      "description": "This project ships as an npm package containing precompiled Rust binaries. The chain: (1) Cargo.toml defines the crate (idont-notebook v0.1.3, edition 2024) with dependencies on rustyline, serde, toml, thiserror, chrono, and dirs. It declares a [[bin]] target named idontnote. (2) bin/idontnote.js is a Node.js wrapper that detects the current platform (win32/darwin/linux combined with x64/arm64 a 6 combinations), locates the matching binary (idontnote-<target>[.exe]), sets execute permissions on Unix, and spawns it with stdio inheritance. (3) package.json declares idontnote as the bin entry point and defines a prepublishOnly hook that runs scripts/check-binaries.js to validate all platform binaries exist before publishing. (4) .github/workflows/publish.yml is triggered on v* tags. It uses a matrix build across 6 targets (Linux x64/arm64, macOS x64/arm64, Windows x64/arm64), cross-compiles via cargo build --release, uploads artifacts, then a publish-npm job collects all binaries into bin/ and publishes to npm with provenance. The aarch64-linux target requires gcc-aarch64-linux-gnu cross-compilation tooling. All user-facing text is in Chinese throughout.",
+      "nodeIds": [
+        "config:Cargo.toml",
+        "config:Cargo.lock",
+        "config:package.json",
+        "config:.npmignore",
+        "file:bin/idontnote.js",
+        "file:scripts/check-binaries.js",
+        "pipeline:.github/workflows/publish.yml"
+      ],
+      "languageLesson": "Rust pattern a edition 2024 and bin target: Rust edition 2024 requires Rust 1.85+. The [[bin]] table syntax (double brackets) declares a binary target a Cargo.toml can have multiple [[bin]] entries for multi-binary crates. The npm + Rust hybrid distribution is worth studying: Node.js serves as a universal launcher, and GitHub Actions provides the cross-compilation matrix a a pragmatic way to distribute Rust CLI tools to non-Rust users."
+    }
+  ]
+}
