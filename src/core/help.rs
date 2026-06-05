@@ -20,6 +20,9 @@ pub fn help() -> Result<(), StorageError> {
     println!("    untrack <filename>           隐藏文件（不删除）");
     println!("    track <filename>             恢复显示被隐藏的文件");
     println!();
+    println!("  搜索:");
+    println!("    chat \"<关键词>\"         搜索所有仓库的文件名和内容");
+    println!();
     println!("  其他:");
     println!("    listlog                (log) 显示本次会话的命令历史");
     println!("    help                         显示此帮助");
