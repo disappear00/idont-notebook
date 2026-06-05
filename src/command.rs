@@ -11,6 +11,7 @@ pub enum Command {
     Track(String),
     Untrack(String),
     Listlog,
+    Chat(String),
     Help,
     Exit,
 }
@@ -112,6 +113,14 @@ pub fn parse(input: &str) -> Result<Command, String> {
             Ok(Command::Untrack(name.to_string()))
         }
         "listlog" | "log" => Ok(Command::Listlog),
+        "chat" => {
+            let arg = parts.get(1).ok_or("用法: chat \"<搜索关键词>\"")?;
+            let keyword = arg.trim_matches('"');
+            if keyword.is_empty() {
+                return Err("搜索关键词不能为空".into());
+            }
+            Ok(Command::Chat(keyword.to_string()))
+        }
         "help" => Ok(Command::Help),
         "exit" | "quit" => Ok(Command::Exit),
         _ => Err(format!("未知命令: {}，输入 help 查看帮助", cmd)),

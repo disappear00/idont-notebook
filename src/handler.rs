@@ -68,6 +68,7 @@ pub fn dispatch(storage: &mut Storage, log: &[String], cmd: Command) -> Result<b
         Command::Track(filename) => handle_track(storage, &filename)?,
         Command::Untrack(filename) => handle_untrack(storage, &filename)?,
         Command::Listlog => handle_listlog(log)?,
+        Command::Chat(_) => todo!(),
         Command::Help => handle_help()?,
         Command::Exit => return Ok(true),
     }
