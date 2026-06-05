@@ -114,8 +114,11 @@ pub fn parse(input: &str) -> Result<Command, String> {
         }
         "listlog" | "log" => Ok(Command::Listlog),
         "chat" => {
-            let arg = parts.get(1).ok_or("用法: chat \"<搜索关键词>\"")?;
-            let keyword = arg.trim_matches('"');
+            let rest = input.strip_prefix("chat").unwrap_or("").trim();
+            if rest.is_empty() {
+                return Err("用法: chat \"<搜索关键词>\"".into());
+            }
+            let keyword = rest.trim_matches('"');
             if keyword.is_empty() {
                 return Err("搜索关键词不能为空".into());
             }
