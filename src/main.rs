@@ -2,6 +2,7 @@ mod command;
 mod core;
 mod handler;
 mod repl;
+mod search;
 mod storage;
 
 fn main() {
