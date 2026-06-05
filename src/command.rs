@@ -129,3 +129,26 @@ pub fn parse(input: &str) -> Result<Command, String> {
         _ => Err(format!("未知命令: {}，输入 help 查看帮助", cmd)),
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_parse_chat_command() {
+        let result = parse("chat \"rust\"").unwrap();
+        assert!(matches!(result, Command::Chat(s) if s == "rust"));
+    }
+
+    #[test]
+    fn test_parse_chat_command_missing_arg() {
+        let result = parse("chat");
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_parse_chat_command_empty_keyword() {
+        let result = parse("chat \"\"");
+        assert!(result.is_err());
+    }
+}

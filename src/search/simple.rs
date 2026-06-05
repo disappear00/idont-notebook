@@ -66,3 +66,51 @@ impl Searcher for SimpleSearcher {
         Ok(results)
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::fs;
+    use tempfile::tempdir;
+
+    #[test]
+    fn test_simple_search_filename_match() {
+        let dir = tempdir().unwrap();
+        let notebook_path = dir.path().join(".notes").join("data");
+        fs::create_dir_all(&notebook_path).unwrap();
+        
+        fs::write(notebook_path.join("rust学习笔记.md"), "这是测试内容").unwrap();
+        
+        let notebooks = vec![NotebookEntry {
+            name: "测试仓库".to_string(),
+            path: dir.path().join(".notes"),
+        }];
+        
+        let searcher = SimpleSearcher;
+        let results = searcher.search("rust", &notebooks).unwrap();
+        
+        assert_eq!(results.len(), 1);
+        assert_eq!(results[0].filename, "rust学习笔记.md");
+    }
+
+    #[test]
+    fn test_simple_search_content_match() {
+        let dir = tempdir().unwrap();
+        let notebook_path = dir.path().join(".notes").join("data");
+        fs::create_dir_all(&notebook_path).unwrap();
+        
+        fs::write(notebook_path.join("test.md"), "这是rust学习内容\n第二行").unwrap();
+        
+        let notebooks = vec![NotebookEntry {
+            name: "测试仓库".to_string(),
+            path: dir.path().join(".notes"),
+        }];
+        
+        let searcher = SimpleSearcher;
+        let results = searcher.search("rust", &notebooks).unwrap();
+        
+        assert_eq!(results.len(), 1);
+        assert_eq!(results[0].matched_lines.len(), 1);
+        assert_eq!(results[0].matched_lines[0].line_number, 1);
+    }
+}
