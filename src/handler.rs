@@ -54,6 +54,10 @@ pub fn handle_help() -> Result<(), StorageError> {
     help::help()
 }
 
+pub fn handle_chat(storage: &mut Storage, keyword: &str) -> Result<(), StorageError> {
+    chat::chat(storage, keyword)
+}
+
 pub fn dispatch(storage: &mut Storage, log: &[String], cmd: Command) -> Result<bool, StorageError> {
     match cmd {
         Command::Mknote(filename) => handle_mknote(storage, &filename)?,
@@ -68,7 +72,7 @@ pub fn dispatch(storage: &mut Storage, log: &[String], cmd: Command) -> Result<b
         Command::Track(filename) => handle_track(storage, &filename)?,
         Command::Untrack(filename) => handle_untrack(storage, &filename)?,
         Command::Listlog => handle_listlog(log)?,
-        Command::Chat(_) => todo!(),
+        Command::Chat(keyword) => handle_chat(storage, &keyword)?,
         Command::Help => handle_help()?,
         Command::Exit => return Ok(true),
     }
